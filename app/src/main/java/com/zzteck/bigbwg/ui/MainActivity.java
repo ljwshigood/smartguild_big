@@ -95,10 +95,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(msg.what == 0){
-               // Toast.makeText(MainActivity.this,"mCGZNFragment###############",1).show();
                 hideAllFragment();
                 showFragment(mCGZNFragment) ;
-                mCGZNFragment.requestBwg();
+                mCGZNFragment.requestBwgHome();
             }
         }
     } ;
@@ -252,7 +251,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void ILogin(LoginBean bean) {
 
-                mHandler.sendEmptyMessage(0) ;
+                mHandler.sendEmptyMessageDelayed(0,3000) ;
                /* hideAllFragment();
                 showFragment(mCGZNFragment) ;
                 mCGZNFragment.requestBwg();*/
