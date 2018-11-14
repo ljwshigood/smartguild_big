@@ -64,5 +64,7 @@ public class Constant {
 	public static String HOST = "http://bwg.jianjiesz.com/dljapp" ;
 
 	public static String HOST_LOGIN = "http://bwg.jianjiesz.com/dljapp/default/login" ;
-	
+
+	public static String GET_BWG_DETAIL = "/bwg/get-bwg";
+
 }

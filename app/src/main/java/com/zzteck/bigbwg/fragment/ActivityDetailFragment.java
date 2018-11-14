@@ -16,6 +16,7 @@ import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.ActivityAdapter;
 import com.zzteck.bigbwg.bean.ActDetailBean;
 import com.zzteck.bigbwg.bean.ActListBean;
+import com.zzteck.bigbwg.bean.BwgBean;
 import com.zzteck.bigbwg.bean.LoginBean;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
@@ -81,6 +82,11 @@ public class ActivityDetailFragment extends Fragment {
                     mCurrentBean = bean ;
                     mHandler.sendEmptyMessage(0) ;
                 }
+            }
+
+            @Override
+            public void IBwgDetail(BwgBean bean) {
+
             }
 
             @Override

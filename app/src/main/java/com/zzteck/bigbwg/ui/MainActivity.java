@@ -2,16 +2,20 @@ package com.zzteck.bigbwg.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.bean.ActDetailBean;
 import com.zzteck.bigbwg.bean.ActListBean;
+import com.zzteck.bigbwg.bean.BwgBean;
 import com.zzteck.bigbwg.bean.LoginBean;
 import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
@@ -36,15 +40,6 @@ import com.zztek.mediaservier.BgMusicControlService;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
-
-/*import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;*/
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
@@ -94,6 +89,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private TextView mTvSet ;
 
+    private Handler mHandler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == 0){
+               // Toast.makeText(MainActivity.this,"mCGZNFragment###############",1).show();
+                hideAllFragment();
+                showFragment(mCGZNFragment) ;
+                mCGZNFragment.requestBwg();
+            }
+        }
+    } ;
+
     private void hideAllFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(mCGZNFragment);
@@ -109,7 +118,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         fragmentTransaction.hide(mWenChuangDetailFragment) ;
         fragmentTransaction.hide(mJDDetailFragment) ;
         fragmentTransaction.hide(mVideoDetailFragment) ;
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
 
@@ -170,7 +179,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 .commit();
 
         hideAllFragment() ;
-
+        showFragment(mCGZNFragment);
     }
 
     private class CodeBean {
@@ -229,8 +238,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         bean.setCode(device);
         String json = gson.toJson(bean) ;
 
-        WebActManager.getInstance(this).loginWeb(this,json);
-        WebActManager.getInstance(this).setmIActManager(new IActManager() {
+        WebActManager.getInstance(this).loginWeb(this,json,new IActManager() {
             @Override
             public void IRelicLists(NearWenWuBean bean) {
 
@@ -244,6 +252,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void ILogin(LoginBean bean) {
 
+                mHandler.sendEmptyMessage(0) ;
+               /* hideAllFragment();
+                showFragment(mCGZNFragment) ;
+                mCGZNFragment.requestBwg();*/
             }
 
             @Override
@@ -253,6 +265,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
             @Override
             public void IActivityDetail(ActDetailBean bean) {
+
+            }
+
+            @Override
+            public void IBwgDetail(BwgBean bean) {
 
             }
 
@@ -301,14 +318,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_cg_zhinan :
                 hideAllFragment();
                 showFragment(mCGZNFragment) ;
+                mCGZNFragment.requestBwg();
                 break ;
             case R.id.tv_cg_help :
                 hideAllFragment();
                 showFragment(mCGBZFragment) ;
+                mCGBZFragment.requestBwg();
                 break ;
             case R.id.tv_cg_jiaotong:
                 hideAllFragment();
                 showFragment(mCGJTFragement) ;
+                mCGJTFragement.requestBwg();
                 break ;
             case R.id.tv_cg_jianyi:
                 hideAllFragment();

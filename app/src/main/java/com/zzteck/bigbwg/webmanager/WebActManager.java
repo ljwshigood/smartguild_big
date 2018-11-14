@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.zzteck.bigbwg.bean.ActDetailBean;
 import com.zzteck.bigbwg.bean.ActListBean;
+import com.zzteck.bigbwg.bean.BwgBean;
 import com.zzteck.bigbwg.bean.LoginBean;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
@@ -198,7 +199,46 @@ public class WebActManager {
 		});
     }
 
-    public void loginWeb(final Context context, String code) {
+	public void getBwg(Context context,String id) {
+
+		JSONObject json = new JSONObject();
+		try {
+			json.put ( "id", id );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+
+		Request request = new Request.Builder()
+				.url(Constant.HOST + Constant.GET_BWG_DETAIL)
+				.post(requestBody)
+				.build();
+
+		Call call = WebManager.getInstance(context).okHttpClient.newCall(request);
+
+		call.enqueue(new Callback() {
+
+			@Override
+			public void onFailure(Call call, IOException e) {
+				System.out.println("连接失败");
+
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				String string = response.body().string() ;
+				Gson gson = new Gson() ;
+				BwgBean bean = gson.fromJson(string, BwgBean.class) ;
+				if(mIActManager != null){
+					mIActManager.IBwgDetail(bean);
+				}
+			}
+
+		});
+
+	}
+
+    public void loginWeb(final Context context, String code, final IActManager iActManager) {
 
 		RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), code);
 
@@ -222,6 +262,9 @@ public class WebActManager {
 				LoginBean bean = gson.fromJson(string,LoginBean.class) ;
 				if(bean.getErrcode() == 200){
 					SharedPreferencesUtils.setParam(context,"token",bean.getData().getToken());
+					if(iActManager != null){
+						iActManager.ILogin(bean);
+					}
 				}
 			}
 

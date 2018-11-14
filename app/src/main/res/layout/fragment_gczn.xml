@@ -14,7 +14,8 @@
             android:id="@+id/tv_cgzn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/zhinan" />
+            android:layout_marginTop="45dp"
+            android:text="" />
 
     </LinearLayout>
 </ScrollView>

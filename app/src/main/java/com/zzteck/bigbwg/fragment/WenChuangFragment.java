@@ -14,6 +14,7 @@ import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.WenChuangAdapter;
 import com.zzteck.bigbwg.bean.ActDetailBean;
 import com.zzteck.bigbwg.bean.ActListBean;
+import com.zzteck.bigbwg.bean.BwgBean;
 import com.zzteck.bigbwg.bean.LoginBean;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
@@ -82,6 +83,11 @@ public class WenChuangFragment extends Fragment {
 
             @Override
             public void IActivityDetail(ActDetailBean bean) {
+
+            }
+
+            @Override
+            public void IBwgDetail(BwgBean bean) {
 
             }
 
