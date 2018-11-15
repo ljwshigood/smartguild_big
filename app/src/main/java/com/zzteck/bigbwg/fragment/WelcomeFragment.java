@@ -28,7 +28,6 @@ import com.zzteck.bigbwg.bean.NearWenWuBean;
 import com.zzteck.bigbwg.impl.IActManager;
 import com.zzteck.bigbwg.utils.Constant;
 import com.zzteck.bigbwg.webmanager.WebActManager;
-import com.zzteck.bigbwg.webmanager.WebManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,15 +39,42 @@ import org.simple.eventbus.Subscriber;
  */
 
 
-public class CGZNFragment extends Fragment implements  IActManager{
+public class WelcomeFragment extends Fragment implements  IActManager{
 
-    private static final String TAG = "CGZNFragment";
+    private static final String TAG = "WelcomeFragment";
 
-    private TextView mTvCGZN ;
+    private LinearLayout mLlShouYe ;
+
+    private ImageView mIvLogo ;
+
+    private TextView mTvLogo ;
+
+    @Subscriber
+    public void onEventMainThread(final MsgEvent msgEvent){
+        requestBwgHome();
+    }
 
     private void initView(View view){
-        mTvCGZN = view.findViewById(R.id.tv_cgzn) ;
+        mLlShouYe= view.findViewById(R.id.ll_shouye) ;
+        mIvLogo = view.findViewById(R.id.iv_logo) ;
+        mTvLogo = view.findViewById(R.id.tv_intrution) ;
     }
+
+
+    private void initHome(BwgBean bean){
+        mLlShouYe.setVisibility(View.VISIBLE) ;
+        try {
+            JSONArray jsonArray = new JSONArray(bean.getData().getImgs()) ;
+            if(jsonArray != null && jsonArray.length() > 1){
+                Glide.with(App.getContext()).load(Constant.FILE_HOST+jsonArray.get(0).toString()).placeholder(R.mipmap.ic_launcher).into(mIvLogo);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mTvLogo.setText(Html.fromHtml(bean.getData().getDesc()));
+    }
+
+    private BwgBean mBwgBean1 ;
 
     public void requestBwgHome(){
         WebActManager.getInstance(getActivity()).getBwg1(getActivity(), "0", new IActManager() {
@@ -79,6 +105,7 @@ public class CGZNFragment extends Fragment implements  IActManager{
 
             @Override
             public void IBwgDetail(BwgBean bean) {
+                mBwgBean1 = bean ;
                 mHandler.sendEmptyMessage(1) ;
             }
 
@@ -99,26 +126,23 @@ public class CGZNFragment extends Fragment implements  IActManager{
         });
     }
 
-    public void requestBwg(){
-        WebActManager.getInstance(getActivity()).setmIActManager(this);
-        WebActManager.getInstance(getActivity()).getBwg(getActivity(),"0");
-    }
-
     private Context mContext ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        View view  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_gczn,null) ;
+        View view  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_welcome,null) ;
         initView(view) ;
         mContext = getActivity() ;
-        requestBwg() ;
+        requestBwgHome() ;
+        EventBus.getDefault().register(this);
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -179,12 +203,8 @@ public class CGZNFragment extends Fragment implements  IActManager{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mTvCGZN.setText("");
-            if(msg.what == 0){
-                if(mBwgBean != null){
-                    mTvCGZN.setVisibility(View.VISIBLE) ;
-                    mTvCGZN.setText(Html.fromHtml(mBwgBean.getData().getAttention()+""));
-                }
+            if(msg.what == 1){
+                initHome(mBwgBean1) ;
             }
         }
     } ;

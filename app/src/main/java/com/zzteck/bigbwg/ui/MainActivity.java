@@ -28,6 +28,7 @@ import com.zzteck.bigbwg.fragment.CGJYFragment;
 import com.zzteck.bigbwg.fragment.CGJinDianFragment;
 import com.zzteck.bigbwg.fragment.CGMapFragment;
 import com.zzteck.bigbwg.fragment.VideoDetailFragment;
+import com.zzteck.bigbwg.fragment.WelcomeFragment;
 import com.zzteck.bigbwg.fragment.WenChuangDetailFragment;
 import com.zzteck.bigbwg.fragment.WenChuangFragment;
 import com.zzteck.bigbwg.fragment.CGZNFragment;
@@ -87,6 +88,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private VideoDetailFragment mVideoDetailFragment ;
 
+    private WelcomeFragment mWelcomeFragment ;
+
     private TextView mTvSet ;
 
     private Handler mHandler = new Handler(){
@@ -104,7 +107,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private void hideAllFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.hide(mCGZNFragment);
+        fragmentTransaction.hide(mWelcomeFragment) ;
+       /* fragmentTransaction.hide(mCGZNFragment);
         fragmentTransaction.hide(mCGBZFragment);
         fragmentTransaction.hide(mCGJTFragement);
         fragmentTransaction.hide(mCGJYFragment) ;
@@ -116,8 +120,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         fragmentTransaction.hide(mActivityDetail) ;
         fragmentTransaction.hide(mWenChuangDetailFragment) ;
         fragmentTransaction.hide(mJDDetailFragment) ;
-        fragmentTransaction.hide(mVideoDetailFragment) ;
-        fragmentTransaction.commitAllowingStateLoss();
+        fragmentTransaction.hide(mVideoDetailFragment) ;*/
+        fragmentTransaction.commit() ;
     }
 
 
@@ -161,9 +165,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
         mVideoDetailFragment = new VideoDetailFragment() ;
 
+        mWelcomeFragment = new WelcomeFragment() ;
+
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.f_containers,mCGZNFragment)
-                .add(R.id.f_containers,mCGBZFragment)
+                .add(R.id.f_containers,mWelcomeFragment)
+               // .add(R.id.f_containers,mCGZNFragment)
+                /*.add(R.id.f_containers,mCGBZFragment)
                 .add(R.id.f_containers,mCGJTFragement)
                 .add(R.id.f_containers,mCGJYFragment)
                 .add(R.id.f_containers, mWenChuangFragment)
@@ -174,11 +181,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 .add(R.id.f_containers,mActivityDetail)
                 .add(R.id.f_containers, mWenChuangDetailFragment)
                 .add(R.id.f_containers,mJDDetailFragment)
-                .add(R.id.f_containers,mVideoDetailFragment)
+                .add(R.id.f_containers,mVideoDetailFragment)*/
                 .commit();
 
         hideAllFragment() ;
-        showFragment(mCGZNFragment);
+        showFragment(mWelcomeFragment);
     }
 
     private class CodeBean {
@@ -250,11 +257,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
             @Override
             public void ILogin(LoginBean bean) {
-
-                mHandler.sendEmptyMessageDelayed(0,3000) ;
-               /* hideAllFragment();
-                showFragment(mCGZNFragment) ;
-                mCGZNFragment.requestBwg();*/
+                EventBus.getDefault().post(new MsgEvent("",1));
             }
 
             @Override
@@ -304,7 +307,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      * @param fragment 要显示的fragment
      */
     private void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().show(mWelcomeFragment).commit();
+        //getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+        //getSupportFragmentManager().beginTransaction().show(fragment).commit();
     }
 
     @Override
@@ -316,18 +321,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break ;
             case R.id.tv_cg_zhinan :
                 hideAllFragment();
-                showFragment(mCGZNFragment) ;
-                mCGZNFragment.requestBwg();
+               /* showFragment(mCGZNFragment) ;
+                mCGZNFragment.requestBwg();*/
                 break ;
             case R.id.tv_cg_help :
                 hideAllFragment();
                 showFragment(mCGBZFragment) ;
-                mCGBZFragment.requestBwg();
+               // mCGBZFragment.requestBwg();
                 break ;
             case R.id.tv_cg_jiaotong:
                 hideAllFragment();
                 showFragment(mCGJTFragement) ;
-                mCGJTFragement.requestBwg();
+               // mCGJTFragement.requestBwg();
                 break ;
             case R.id.tv_cg_jianyi:
                 hideAllFragment();
@@ -337,13 +342,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_jdgc:
                 hideAllFragment();
                 showFragment(mJinDianFragment) ;
-                mJinDianFragment.requestWeb();
+               // mJinDianFragment.requestWeb();
 
                 break ;
             case R.id.tv_wcjn:
                 hideAllFragment();
                 showFragment(mWenChuangFragment) ;
-                mWenChuangFragment.requestWeb();
+              //  mWenChuangFragment.requestWeb();
                 break ;
             case R.id.tv_cgditu :
                 hideAllFragment();
@@ -352,7 +357,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.tv_cg_huodong:
                 hideAllFragment();
                 showFragment(mActivityFragment) ;
-                mActivityFragment.requestActivitys();
+               // mActivityFragment.requestActivitys();
                 break ;
         }
     }

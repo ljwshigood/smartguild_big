@@ -55,6 +55,7 @@
     <!-- 腾讯定位 sdk 要求的权限 (结束) -->
 
     <application
+        android:name=".App.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
