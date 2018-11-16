@@ -27,7 +27,7 @@ import com.zzteck.bigbwg.webmanager.WebActManager;
 
 public class WenChuangFragment extends Fragment {
 
-    private static final String TAG = "CGZNFragment";
+    private static final String TAG = "PlaceGuildFragment";
 
     private GridView mGvWenChuang;
 
@@ -56,8 +56,7 @@ public class WenChuangFragment extends Fragment {
 
     public void requestWeb() {
 
-        WebActManager.getInstance(getActivity()).relicWenChuangLists(getActivity(),2,"","");
-        WebActManager.getInstance(getActivity()).setmIActManager(new IActManager() {
+        WebActManager.getInstance(getActivity()).relicWenChuangLists(getActivity(),2,"","",new IActManager() {
             @Override
             public void IRelicLists(NearWenWuBean bean) {
 

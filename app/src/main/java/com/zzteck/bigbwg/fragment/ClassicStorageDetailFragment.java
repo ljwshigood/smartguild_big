@@ -39,9 +39,9 @@ import java.util.List;
  * Created by Tan on 2018/7/23.
  */
 
-public class JinDianDetailFragment extends Fragment {
+public class ClassicStorageDetailFragment extends Fragment {
 
-    private static final String TAG = "JinDianDetailFragment";
+    private static final String TAG = "ClassicStorageDetailFragment";
 
     private WebView mWebView ;
 

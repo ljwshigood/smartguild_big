@@ -54,8 +54,7 @@ public class ActivityDetailFragment extends Fragment {
 
     public void requestActivitys(String id){
         mTvDetail.setText("") ;
-        WebActManager.getInstance(getActivity()).activityDetail(getActivity(),id) ;
-        WebActManager.getInstance(getActivity()).setmIActManager(new IActManager() {
+        WebActManager.getInstance(getActivity()).activityDetail(getActivity(),id,new IActManager() {
             @Override
             public void IRelicLists(NearWenWuBean bean) {
 
@@ -78,7 +77,7 @@ public class ActivityDetailFragment extends Fragment {
 
             @Override
             public void IActivityDetail(ActDetailBean bean) {
-                   if(bean.getErrcode() == 200){
+                if(bean.getErrcode() == 200){
                     mCurrentBean = bean ;
                     mHandler.sendEmptyMessage(0) ;
                 }
@@ -103,7 +102,7 @@ public class ActivityDetailFragment extends Fragment {
             public void netWorkError(String message) {
 
             }
-        }); ;
+        }) ;
     }
 
 

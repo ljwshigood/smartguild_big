@@ -14,14 +14,14 @@ import com.zzteck.bigbwg.R;
  * Created by Tan on 2018/7/23.
  */
 
-public class CGMapFragment extends Fragment {
+public class MapFragment extends Fragment {
 
-    private static final String TAG = "CGMapFragment";
+    private static final String TAG = "MapFragment";
 
-    private TextView mTvCGZN ;
+    private TextView mTvMap ;
 
     private void initView(View view){
-        mTvCGZN = view.findViewById(R.id.tv_cgzn) ;
+        mTvMap = view.findViewById(R.id.tv_cgzn) ;
     }
 
 

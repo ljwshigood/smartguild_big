@@ -2,14 +2,10 @@ package com.zzteck.bigbwg.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.zzteck.bigbwg.R;
@@ -20,27 +16,32 @@ import com.zzteck.bigbwg.bean.LoginBean;
 import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
+import com.zzteck.bigbwg.fragment.AFragment;
 import com.zzteck.bigbwg.fragment.ActivityDetailFragment;
-import com.zzteck.bigbwg.fragment.CGActivityFragment;
-import com.zzteck.bigbwg.fragment.CGBZFragment;
-import com.zzteck.bigbwg.fragment.CGJTFragment;
-import com.zzteck.bigbwg.fragment.CGJYFragment;
-import com.zzteck.bigbwg.fragment.CGJinDianFragment;
-import com.zzteck.bigbwg.fragment.CGMapFragment;
+import com.zzteck.bigbwg.fragment.ActivityFragment;
+import com.zzteck.bigbwg.fragment.ClassicStorageDetailFragment;
+import com.zzteck.bigbwg.fragment.ClassicStorageFragment;
+import com.zzteck.bigbwg.fragment.PlaceHelpFragment;
+import com.zzteck.bigbwg.fragment.TrafficFragment;
+import com.zzteck.bigbwg.fragment.FeedBackFragment;
+import com.zzteck.bigbwg.fragment.MapFragment;
+import com.zzteck.bigbwg.fragment.PlaceGuildFragment;
 import com.zzteck.bigbwg.fragment.VideoDetailFragment;
 import com.zzteck.bigbwg.fragment.WelcomeFragment;
 import com.zzteck.bigbwg.fragment.WenChuangDetailFragment;
 import com.zzteck.bigbwg.fragment.WenChuangFragment;
-import com.zzteck.bigbwg.fragment.CGZNFragment;
-import com.zzteck.bigbwg.fragment.JinDianDetailFragment;
 import com.zzteck.bigbwg.fragment.SetFragment;
 import com.zzteck.bigbwg.impl.IActManager;
 import com.zzteck.bigbwg.utils.SharedPreferencesUtils;
+import com.zzteck.bigbwg.view.RXViewPaper;
 import com.zzteck.bigbwg.webmanager.WebActManager;
 import com.zztek.mediaservier.BgMusicControlService;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
@@ -60,31 +61,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private TextView mTvCGHD ;
 
-    private FrameLayout mFrameLayout ;
+   // private FrameLayout mFrameLayout ;
 
-    private CGZNFragment mCGZNFragment ;
+    private PlaceGuildFragment mPlaceGuildFragment ;
 
-    private CGBZFragment mCGBZFragment ;
+    private PlaceHelpFragment mPlaceHelpFragment;
 
-    private CGJTFragment mCGJTFragement ;
+    private TrafficFragment mTrafficFragement;
 
-    private CGJYFragment mCGJYFragment ;
+    private FeedBackFragment mFeedBackFragment;
 
     private WenChuangFragment mWenChuangFragment;
 
     private SetFragment mSetFragment ;
 
-    private CGJinDianFragment mJinDianFragment ;
+    private ClassicStorageFragment mClassStorageFragment;
 
-    private CGMapFragment mMapFragment;
+    private MapFragment mMapFragment;
 
-    private CGActivityFragment mActivityFragment ;
+    private ActivityFragment mActivityFragment ;
 
     private ActivityDetailFragment mActivityDetail ;
 
     private WenChuangDetailFragment mWenChuangDetailFragment;
 
-    private JinDianDetailFragment mJDDetailFragment ;
+    private ClassicStorageDetailFragment mClassicDetailFragment;
 
     private VideoDetailFragment mVideoDetailFragment ;
 
@@ -92,51 +93,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private TextView mTvSet ;
 
-    private Handler mHandler = new Handler(){
+    private List<Fragment> mFragments = new ArrayList<>();
 
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if(msg.what == 0){
-                hideAllFragment();
-                showFragment(mCGZNFragment) ;
-                mCGZNFragment.requestBwgHome();
-            }
-        }
-    } ;
+    private RXViewPaper mVp ;
 
-    private void hideAllFragment() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.hide(mWelcomeFragment) ;
-       /* fragmentTransaction.hide(mCGZNFragment);
-        fragmentTransaction.hide(mCGBZFragment);
-        fragmentTransaction.hide(mCGJTFragement);
-        fragmentTransaction.hide(mCGJYFragment) ;
-        fragmentTransaction.hide(mWenChuangFragment) ;
-        fragmentTransaction.hide(mSetFragment) ;
-        fragmentTransaction.hide(mJinDianFragment) ;
-        fragmentTransaction.hide(mMapFragment) ;
-        fragmentTransaction.hide(mActivityFragment) ;
-        fragmentTransaction.hide(mActivityDetail) ;
-        fragmentTransaction.hide(mWenChuangDetailFragment) ;
-        fragmentTransaction.hide(mJDDetailFragment) ;
-        fragmentTransaction.hide(mVideoDetailFragment) ;*/
-        fragmentTransaction.commit() ;
-    }
-
+    private AFragment mAFragment ;
 
     private void initView(){
-        mTvSet = findViewById(R.id.tv_set) ;
-        mFrameLayout = findViewById(R.id.f_containers) ;
-        mTvCGZN = findViewById(R.id.tv_cg_zhinan) ;
-        mTvCGBZ = findViewById(R.id.tv_cg_help) ;
-        mTvCGJT = findViewById(R.id.tv_cg_jiaotong) ;
-        mTvCGJY = findViewById(R.id.tv_cg_jianyi) ;
 
-        mTvJDGC = findViewById(R.id.tv_jdgc) ;
-        mTvWCJN = findViewById(R.id.tv_wcjn) ;
-        mTvCGDT = findViewById(R.id.tv_cgditu) ;
-        mTvCGHD = findViewById(R.id.tv_cg_huodong) ;
+        mVp = findViewById(R.id.rx_vp) ;
+        mTvSet = findViewById(R.id.tv_set) ;
+        mTvCGZN = findViewById(R.id.tv_place_guild) ;
+        mTvCGBZ = findViewById(R.id.tv_place_help) ;
+        mTvCGJT = findViewById(R.id.tv_traffic) ;
+        mTvCGJY = findViewById(R.id.tv_feedback) ;
+
+        mTvJDGC = findViewById(R.id.tv_classic_storage) ;
+        mTvWCJN = findViewById(R.id.tv_wenchuang_remember) ;
+        mTvCGDT = findViewById(R.id.tv_map) ;
+        mTvCGHD = findViewById(R.id.tv_activity) ;
 
         mTvCGZN.setOnClickListener(this);
         mTvCGBZ.setOnClickListener(this);
@@ -150,42 +125,54 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
         mTvSet.setOnClickListener(this);
 
-        mCGZNFragment = new CGZNFragment() ;
-        mCGBZFragment = new CGBZFragment() ;
-        mCGJTFragement= new CGJTFragment() ;
-        mCGJYFragment = new CGJYFragment() ;
+        mWelcomeFragment = new WelcomeFragment() ;
+        mPlaceGuildFragment = new PlaceGuildFragment() ;
+        mPlaceHelpFragment = new PlaceHelpFragment() ;
+        mTrafficFragement = new TrafficFragment() ;
+        mFeedBackFragment = new FeedBackFragment() ;
         mWenChuangFragment = new WenChuangFragment() ;
         mSetFragment = new SetFragment() ;
-        mJinDianFragment = new CGJinDianFragment() ;
-        mMapFragment = new CGMapFragment() ;
-        mActivityFragment = new CGActivityFragment() ;
+        mClassStorageFragment = new ClassicStorageFragment() ;
+        mMapFragment = new MapFragment() ;
+        mActivityFragment = new ActivityFragment() ;
         mActivityDetail  = new ActivityDetailFragment() ;
         mWenChuangDetailFragment = new WenChuangDetailFragment() ;
-        mJDDetailFragment = new JinDianDetailFragment();
+        mClassicDetailFragment = new ClassicStorageDetailFragment();
 
         mVideoDetailFragment = new VideoDetailFragment() ;
 
-        mWelcomeFragment = new WelcomeFragment() ;
+        mFragments.add(mWelcomeFragment) ;
+        mFragments.add(mPlaceGuildFragment) ;
+        mFragments.add(mPlaceHelpFragment) ;
+        mFragments.add(mTrafficFragement) ;
+        mFragments.add(mFeedBackFragment) ;
+        mFragments.add(mClassStorageFragment) ;
+        mFragments.add(mWenChuangFragment) ;
+        mFragments.add(mMapFragment) ;
+        mFragments.add(mActivityFragment) ;
+        mFragments.add(mSetFragment) ;
+        mFragments.add(mClassicDetailFragment) ;
+        mFragments.add(mWenChuangDetailFragment) ;
+        mFragments.add(mActivityDetail) ;
+        mFragments.add(mVideoDetailFragment) ;
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.f_containers,mWelcomeFragment)
-               // .add(R.id.f_containers,mCGZNFragment)
-                /*.add(R.id.f_containers,mCGBZFragment)
-                .add(R.id.f_containers,mCGJTFragement)
-                .add(R.id.f_containers,mCGJYFragment)
-                .add(R.id.f_containers, mWenChuangFragment)
-                .add(R.id.f_containers,mSetFragment)
-                .add(R.id.f_containers,mJinDianFragment)
-                .add(R.id.f_containers,mMapFragment)
-                .add(R.id.f_containers,mActivityFragment)
-                .add(R.id.f_containers,mActivityDetail)
-                .add(R.id.f_containers, mWenChuangDetailFragment)
-                .add(R.id.f_containers,mJDDetailFragment)
-                .add(R.id.f_containers,mVideoDetailFragment)*/
-                .commit();
+        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter ( getSupportFragmentManager () ) {
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments.get ( position );
+            }
 
-        hideAllFragment() ;
-        showFragment(mWelcomeFragment);
+            @Override
+            public int getCount() {
+                return mFragments.size ();
+            }
+        };
+
+        mVp.setScrollble(false);
+        mVp.setAdapter ( fragmentPagerAdapter );
+
+        mVp.setOffscreenPageLimit ( 6 );
+        mVp.setCurrentItem ( 0 );
     }
 
     private class CodeBean {
@@ -203,28 +190,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Subscriber
     public void onEventMainThread(final MsgEvent event){
-        hideAllFragment();
         if(event.getType() == 1){ // 活动详情
             String msg = event.getMsg() ;
             mActivityDetail.requestActivitys(msg);
-            showFragment(mActivityDetail) ;
+            mVp.setCurrentItem(12);
         }else if(event.getType() == 5){
             mVideoDetailFragment.updateContent(event.getMsg());
-            showFragment(mVideoDetailFragment) ;
+            mVp.setCurrentItem(13);
         }
     }
 
     @Subscriber
     public void onEventMainThread(final NearWenWuBean.DataBean event){
-        hideAllFragment();
-        showFragment(mJDDetailFragment);
-        mJDDetailFragment.updateContent(event.getFaceimg(),event.getVoice(),event.getVideo(),event.getDesc());
+        mVp.setCurrentItem(10);
+        mClassicDetailFragment.updateContent(event.getFaceimg(),event.getVoice(),event.getVideo(),event.getDesc());
     }
 
     @Subscriber
     public void onEventMainThread(final NearWenChuangBean.DataBean event){
-        hideAllFragment();
-        showFragment(mWenChuangDetailFragment);
+        mVp.setCurrentItem(11);
         mWenChuangDetailFragment.updateContent(event.getDesc());
     }
 
@@ -301,63 +285,36 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         EventBus.getDefault().unregister(this);
     }
 
-    /**
-     * 显示fragment
-     *
-     * @param fragment 要显示的fragment
-     */
-    private void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().show(mWelcomeFragment).commit();
-        //getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
-        //getSupportFragmentManager().beginTransaction().show(fragment).commit();
-    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_set:
-                hideAllFragment();
-                showFragment(mSetFragment) ;
+                mVp.setCurrentItem(9) ;
                 break ;
-            case R.id.tv_cg_zhinan :
-                hideAllFragment();
-               /* showFragment(mCGZNFragment) ;
-                mCGZNFragment.requestBwg();*/
+            case R.id.tv_place_guild:
+                mVp.setCurrentItem(1) ;
                 break ;
-            case R.id.tv_cg_help :
-                hideAllFragment();
-                showFragment(mCGBZFragment) ;
-               // mCGBZFragment.requestBwg();
+            case R.id.tv_place_help:
+                mVp.setCurrentItem(2) ;
                 break ;
-            case R.id.tv_cg_jiaotong:
-                hideAllFragment();
-                showFragment(mCGJTFragement) ;
-               // mCGJTFragement.requestBwg();
+            case R.id.tv_traffic:
+                mVp.setCurrentItem(3) ;
                 break ;
-            case R.id.tv_cg_jianyi:
-                hideAllFragment();
-                showFragment(mCGJYFragment) ;
+            case R.id.tv_feedback:
+                mVp.setCurrentItem(4);
                 break ;
-
-            case R.id.tv_jdgc:
-                hideAllFragment();
-                showFragment(mJinDianFragment) ;
-               // mJinDianFragment.requestWeb();
-
+            case R.id.tv_classic_storage:
+                mVp.setCurrentItem(5);
                 break ;
-            case R.id.tv_wcjn:
-                hideAllFragment();
-                showFragment(mWenChuangFragment) ;
-              //  mWenChuangFragment.requestWeb();
+            case R.id.tv_wenchuang_remember:
+                mVp.setCurrentItem(6);
                 break ;
-            case R.id.tv_cgditu :
-                hideAllFragment();
-                showFragment(mMapFragment) ;
+            case R.id.tv_map:
+                mVp.setCurrentItem(7);
                 break ;
-            case R.id.tv_cg_huodong:
-                hideAllFragment();
-                showFragment(mActivityFragment) ;
-               // mActivityFragment.requestActivitys();
+            case R.id.tv_activity:
+                mVp.setCurrentItem(8);
                 break ;
         }
     }

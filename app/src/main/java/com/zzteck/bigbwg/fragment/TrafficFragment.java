@@ -35,9 +35,9 @@ import com.zzteck.bigbwg.webmanager.WebActManager;
  * Created by Tan on 2018/7/23.
  */
 
-public class CGJTFragment extends Fragment implements IActManager{
+public class TrafficFragment extends Fragment implements IActManager{
 
-    private static final String TAG = "CGZNFragment";
+    private static final String TAG = "PlaceGuildFragment";
 
     private TextView mTvCGZN ,mTvAddress ;
 
@@ -47,8 +47,7 @@ public class CGJTFragment extends Fragment implements IActManager{
     }
 
     public void requestBwg(){
-        WebActManager.getInstance(getActivity()).setmIActManager(this);
-        WebActManager.getInstance(getActivity()).getBwg(getActivity(),"0");
+        WebActManager.getInstance(getActivity()).getBwg(getActivity(),"0",this);
     }
 
 

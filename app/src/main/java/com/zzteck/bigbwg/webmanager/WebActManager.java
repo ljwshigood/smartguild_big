@@ -102,17 +102,7 @@ public class WebActManager {
         return mInstance;
     }
 
-    public IActManager getmIActManager() {
-        return mIActManager;
-    }
-
-    public void setmIActManager(IActManager mIActManager) {
-        this.mIActManager = mIActManager;
-    }
-
-    private IActManager mIActManager ;
-
-	public void relicWenChuangLists(Context context ,int relic_type,String id,String name) {
+	public void relicWenChuangLists(Context context , int relic_type, String id, String name, final IActManager mIActManager) {
 
 
 		JSONObject json = new JSONObject();
@@ -156,7 +146,7 @@ public class WebActManager {
 	}
 
 
-    public void relicLists(Context context ,int relic_type,String id,String name) {
+    public void relicLists(Context context , int relic_type, String id, String name, final IActManager mIActManager) {
 
 
 		JSONObject json = new JSONObject();
@@ -238,7 +228,7 @@ public class WebActManager {
 
 	}
 
-	public void getBwg(Context context,String id) {
+	public void getBwg(Context context, String id, final IActManager mIActManager) {
 
 		JSONObject json = new JSONObject();
 		try {
@@ -311,7 +301,7 @@ public class WebActManager {
 
     }
 
-    public void activityDetail(Context context,String id) {
+    public void activityDetail(Context context, String id, final IActManager mIActManager) {
 
         JSONObject json = new JSONObject();
         StringEntity entity = null;
@@ -352,7 +342,7 @@ public class WebActManager {
 		});
     }
 
-    public void activityList(Context context) {
+    public void activityList(Context context, final IActManager mIActManager) {
 
 
 		RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), "");

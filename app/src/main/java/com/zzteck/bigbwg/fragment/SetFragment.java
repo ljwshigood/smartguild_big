@@ -23,7 +23,7 @@ import java.lang.invoke.MethodType;
 
 public class SetFragment extends Fragment implements View.OnClickListener{
 
-    private static final String TAG = "CGZNFragment";
+    private static final String TAG = "PlaceGuildFragment";
 
     private EditText mEtSet ;
 

@@ -10,44 +10,31 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.zzteck.bigbwg.App.App;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.bean.ActDetailBean;
 import com.zzteck.bigbwg.bean.ActListBean;
 import com.zzteck.bigbwg.bean.BwgBean;
 import com.zzteck.bigbwg.bean.LoginBean;
-import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
 import com.zzteck.bigbwg.impl.IActManager;
-import com.zzteck.bigbwg.utils.Constant;
 import com.zzteck.bigbwg.webmanager.WebActManager;
-import com.zzteck.bigbwg.webmanager.WebManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.simple.eventbus.EventBus;
-import org.simple.eventbus.Subscriber;
 
 /**
  *
  */
 
 
-public class CGZNFragment extends Fragment implements  IActManager{
+public class PlaceGuildFragment extends Fragment implements  IActManager{
 
-    private static final String TAG = "CGZNFragment";
+    private static final String TAG = "PlaceGuildFragment";
 
-    private TextView mTvCGZN ;
+    private TextView mTvPlaceGuildContent;
 
     private void initView(View view){
-        mTvCGZN = view.findViewById(R.id.tv_cgzn) ;
+        mTvPlaceGuildContent = view.findViewById(R.id.tv_cgzn) ;
     }
 
     public void requestBwgHome(){
@@ -100,8 +87,7 @@ public class CGZNFragment extends Fragment implements  IActManager{
     }
 
     public void requestBwg(){
-        WebActManager.getInstance(getActivity()).setmIActManager(this);
-        WebActManager.getInstance(getActivity()).getBwg(getActivity(),"0");
+        WebActManager.getInstance(getActivity()).getBwg(getActivity(),"0",this);
     }
 
     private Context mContext ;
@@ -109,7 +95,7 @@ public class CGZNFragment extends Fragment implements  IActManager{
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
-        View view  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_gczn,null) ;
+        View view  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_place_guild,null) ;
         initView(view) ;
         mContext = getActivity() ;
         requestBwg() ;
@@ -179,11 +165,11 @@ public class CGZNFragment extends Fragment implements  IActManager{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mTvCGZN.setText("");
+            mTvPlaceGuildContent.setText("");
             if(msg.what == 0){
                 if(mBwgBean != null){
-                    mTvCGZN.setVisibility(View.VISIBLE) ;
-                    mTvCGZN.setText(Html.fromHtml(mBwgBean.getData().getAttention()+""));
+                    mTvPlaceGuildContent.setVisibility(View.VISIBLE) ;
+                    mTvPlaceGuildContent.setText(Html.fromHtml(mBwgBean.getData().getAttention()+""));
                 }
             }
         }
