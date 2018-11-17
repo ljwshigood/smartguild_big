@@ -1,12 +1,15 @@
 package com.zzteck.bigbwg.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fengmap.android.FMMapSDK;
 import com.google.gson.Gson;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.bean.ActDetailBean;
@@ -21,6 +24,7 @@ import com.zzteck.bigbwg.fragment.ActivityDetailFragment;
 import com.zzteck.bigbwg.fragment.ActivityFragment;
 import com.zzteck.bigbwg.fragment.ClassicStorageDetailFragment;
 import com.zzteck.bigbwg.fragment.ClassicStorageFragment;
+import com.zzteck.bigbwg.fragment.FMMapBasic;
 import com.zzteck.bigbwg.fragment.PlaceHelpFragment;
 import com.zzteck.bigbwg.fragment.TrafficFragment;
 import com.zzteck.bigbwg.fragment.FeedBackFragment;
@@ -77,7 +81,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private ClassicStorageFragment mClassStorageFragment;
 
-    private MapFragment mMapFragment;
+  //  private MapFragment mMapFragment;
+
+    private FMMapBasic mMapFragment;
 
     private ActivityFragment mActivityFragment ;
 
@@ -133,7 +139,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         mWenChuangFragment = new WenChuangFragment() ;
         mSetFragment = new SetFragment() ;
         mClassStorageFragment = new ClassicStorageFragment() ;
-        mMapFragment = new MapFragment() ;
+        mMapFragment = new FMMapBasic() ;
         mActivityFragment = new ActivityFragment() ;
         mActivityDetail  = new ActivityDetailFragment() ;
         mWenChuangDetailFragment = new WenChuangDetailFragment() ;
@@ -221,6 +227,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
         Intent intent = new Intent(this, BgMusicControlService.class) ;
         startService(intent) ;
+
+        if (Build.VERSION.SDK_INT < 23) {
+            // Android 6.0 之前无需运行时权限申请
+        } else {
+            // 先检测权限   目前SDK只需2个危险权限，读和写存储卡
+            int p = checkSelfPermission(FMMapSDK.SDK_PERMISSIONS[0]);
+            if (p != PackageManager.PERMISSION_GRANTED ) {
+                this.requestPermissions(
+                        FMMapSDK.SDK_PERMISSIONS,  //SDK所需权限数组
+                        FMMapSDK.SDK_PERMISSION_RESULT_CODE);   //SDK权限申请处理结果返回码
+            } else {
+                // 已经拥有权限了
+            }
+        }
+
 
         String device = (String) SharedPreferencesUtils.getParam(this,"device","00001");
         Gson gson = new Gson() ;

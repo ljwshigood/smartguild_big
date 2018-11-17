@@ -19,6 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -39,4 +45,5 @@ dependencies {
     implementation project(':mediaserver')
     implementation project(':jcvideoplayer-lib')
     implementation files('libs/TencentLocationSdk_v7.1.4.3_r4aa8ac63_20180911_165428.jar')
+    implementation files('libs/fengmap-2.1.3.jar')
 }

@@ -67,6 +67,10 @@
             android:name="TencentMapSDK"
             android:value="QNQBZ-3NIWU-55CVA-27K6J-LCCEJ-KVBUX"/>
 
+        <meta-data
+            android:name="com.fengmap.mapapi.appkey"
+            android:value="773e177e4c7a697f6f1fee3ed306dbcf"/>
+
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
