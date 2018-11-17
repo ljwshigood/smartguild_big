@@ -3,6 +3,7 @@ package com.zzteck.bigbwg.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,6 +112,14 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
        mContext.sendBroadcast(intent);
    }
 
+    public void playAudio(String audioPath){
+        Intent mIntent = new Intent();
+        mIntent.setAction(android.content.Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(audioPath);
+        mIntent.setDataAndType(uri , "audio/mp3");
+        mContext.startActivity(mIntent);
+    }
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FileBean filePath = mFileList.get(position) ;
@@ -119,7 +128,9 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
                 if(i == position){
                     mFileList.get(i).setSelect(true);
                     //(TextView)view.findViewById(R.id.tv_file)).setTextColor(Color.RED);
-                    playMusic(filePath.getFilePath()) ;
+                    //playMusic(filePath.getFilePath()) ;
+                   // EventBus.getDefault().post(new MsgEvent(filePath.getFilePath(),5));
+                    playAudio(Constant.FILE_HOST+filePath.getFilePath());
                 }else{
                     mFileList.get(i).setSelect(false);
                    // ((TextView)view.findViewById(R.id.tv_file)).setTextColor(Color.BLACK);

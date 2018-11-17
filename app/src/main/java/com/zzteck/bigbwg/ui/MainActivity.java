@@ -201,8 +201,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             mActivityDetail.requestActivitys(msg);
             mVp.setCurrentItem(12);
         }else if(event.getType() == 5){
-            mVideoDetailFragment.updateContent(event.getMsg());
-            mVp.setCurrentItem(13);
+            Intent intent = new Intent(this,ActivitysDetailActivity.class) ;
+            intent.putExtra("filePath",event.getMsg()) ;
+            startActivity(intent);
+          /*  mVideoDetailFragment.updateContent(event.getMsg());
+            mVp.setCurrentItem(13);*/
         }
     }
 
