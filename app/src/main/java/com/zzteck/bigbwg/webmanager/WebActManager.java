@@ -154,6 +154,7 @@ public class WebActManager {
 			json.put ( "relic_type", relic_type );
 			json.put ( "id", id );
 			json.put ( "name", name );
+			json.put("relic_language_id",1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

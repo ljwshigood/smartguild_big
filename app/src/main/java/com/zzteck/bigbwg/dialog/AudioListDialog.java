@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
+import com.zzteck.bigbwg.bean.FileBean;
 import com.zztek.mediaservier.MusicControl;
 
 import java.util.List;
@@ -28,11 +29,11 @@ public class AudioListDialog extends Dialog {
 
     private Context mContext ;
 
-    private List<String> mAudioPathList ;
+    private List<FileBean> mAudioPathList ;
 
     private ListView mLvFile ;
 
-    public AudioListDialog(@NonNull Context context,List<String> paths) {
+    public AudioListDialog(@NonNull Context context,List<FileBean> paths) {
         super(context, R.style.CustomDialogStyle);
         this.mContext = context;
         this.mAudioPathList = paths ;
@@ -43,8 +44,6 @@ public class AudioListDialog extends Dialog {
         super.onCreate(savedInstanceState);
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_audio_list,null,false);
         this.setContentView(view);
-
-        this.setCanceledOnTouchOutside(false);
 
         mLvFile = view.findViewById(R.id.lv_audio_list) ;
         FileAdapter adapter = new FileAdapter(mContext,mAudioPathList,0,null) ;

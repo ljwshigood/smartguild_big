@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
+import com.zzteck.bigbwg.bean.FileBean;
 
 import java.util.List;
 
@@ -24,11 +26,13 @@ public class VideoListDialog extends Dialog {
 
     private Context mContext ;
 
-    private List<String> mVideoPathList;
+    private List<FileBean> mVideoPathList;
 
     private ListView mLvFile ;
 
-    public VideoListDialog(@NonNull Context context,List<String> paths) {
+    private LinearLayout mLLCancel ;
+
+    public VideoListDialog(@NonNull Context context,List<FileBean> paths) {
         super(context, R.style.CustomDialogStyle);
         this.mContext = context;
         this.mVideoPathList = paths ;
@@ -40,9 +44,8 @@ public class VideoListDialog extends Dialog {
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_video_list,null,false);
         this.setContentView(view);
 
-        this.setCanceledOnTouchOutside(false);
-
         mLvFile = view.findViewById(R.id.lv_video_list) ;
+        mLLCancel = view.findViewById(R.id.ll_cancel) ;
         FileAdapter adapter = new FileAdapter(mContext, mVideoPathList, 1, new FileAdapter.IDialogListener() {
             @Override
             public void dismiss() {
@@ -60,7 +63,7 @@ public class VideoListDialog extends Dialog {
         lp.gravity = Gravity.CENTER;
         window.setAttributes(lp);
 
-
+        setCancelable(false);
 
     }
 

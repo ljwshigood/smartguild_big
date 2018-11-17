@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zzteck.bigbwg.R;
+import com.zzteck.bigbwg.bean.FileBean;
 import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
 import com.zzteck.bigbwg.utils.Constant;
@@ -28,7 +29,7 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
 
 	private Context mContext ;
 
-	private List<String> mFileList ;
+	private List<FileBean> mFileList ;
 
 	private LayoutInflater mLayoutInflater ;
 
@@ -42,7 +43,7 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
 
     }
 
-	public FileAdapter(Context context, List<String> list,int type,IDialogListener listener){
+	public FileAdapter(Context context, List<FileBean> list,int type,IDialogListener listener){
         this.mContext = context ;
         this.mFileList = list ;
         this.mType = type ;
@@ -50,7 +51,7 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
         mLayoutInflater = LayoutInflater.from(context);
     }
 	
-	public void notifyFileAdapter(List<String> list){
+	public void notifyFileAdapter(List<FileBean> list){
 		this.mFileList = list ;
 		notifyDataSetChanged(); 
 	}
@@ -83,9 +84,16 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        String filePath = mFileList.get(position) ;
-        File file = new File(filePath);
+        FileBean filePath = mFileList.get(position) ;
+        File file = new File(filePath.getFilePath());
         viewHolder.mTv.setText(file.getName());
+
+        if(filePath.isSelect()){
+            viewHolder.mTv.setTextColor(Color.RED);
+        }else{
+            viewHolder.mTv.setTextColor(Color.BLACK);
+        }
+
         return convertView;
 	}
 
@@ -96,29 +104,33 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
    private void playMusic(String filePath){
        MusicControl musicControl = new MusicControl() ;
        musicControl.setmAction(1);
-       musicControl.setFilePath(filePath);
+       musicControl.setFilePath(Constant.FILE_HOST+filePath);
        Intent intent = new Intent() ;
        intent.putExtra("music_control",musicControl) ;
+       intent.setAction(com.zztek.mediaservier.Constant.MusicPlayControl.mMusicRecevierAction) ;
        mContext.sendBroadcast(intent);
    }
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String filePath = mFileList.get(position) ;
+        FileBean filePath = mFileList.get(position) ;
        if(mType == 0) {
             for(int i = 0 ;i < mFileList.size() ;i++){
                 if(i == position){
-                    ((TextView)view.findViewById(R.id.tv_file)).setTextColor(Color.RED);
-                    playMusic(filePath) ;
+                    mFileList.get(i).setSelect(true);
+                    //(TextView)view.findViewById(R.id.tv_file)).setTextColor(Color.RED);
+                    playMusic(filePath.getFilePath()) ;
                 }else{
-                    ((TextView)view.findViewById(R.id.tv_file)).setTextColor(Color.BLACK);
+                    mFileList.get(i).setSelect(false);
+                   // ((TextView)view.findViewById(R.id.tv_file)).setTextColor(Color.BLACK);
                 }
             }
+            notifyDataSetChanged();
        }else{
            if(mIDialogListener != null){
                mIDialogListener.dismiss();
            }
-           EventBus.getDefault().post(new MsgEvent(filePath,5));
+           EventBus.getDefault().post(new MsgEvent(filePath.getFilePath(),15));
 
        }
 

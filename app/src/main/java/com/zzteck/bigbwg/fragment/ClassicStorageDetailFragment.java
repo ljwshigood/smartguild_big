@@ -24,13 +24,19 @@ import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.JingDianAdapter;
 import com.zzteck.bigbwg.bean.ActDetailBean;
 import com.zzteck.bigbwg.bean.ActListBean;
+import com.zzteck.bigbwg.bean.FileBean;
 import com.zzteck.bigbwg.bean.LoginBean;
+import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
 import com.zzteck.bigbwg.dialog.AudioListDialog;
 import com.zzteck.bigbwg.dialog.VideoListDialog;
 import com.zzteck.bigbwg.impl.IActManager;
 import com.zzteck.bigbwg.utils.Constant;
 import com.zzteck.bigbwg.webmanager.WebActManager;
+import com.zztek.mediaservier.MusicControl;
+
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +66,15 @@ public class ClassicStorageDetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(mAudioStringList != null && !mAudioStringList.isEmpty()){
-                    AudioListDialog dialog = new AudioListDialog(getActivity(),mAudioStringList) ;
+                    List<FileBean> list = new ArrayList<>() ;
+                    for(int i = 0 ;i < mAudioStringList.size() ;i++){
+                        FileBean bean = new FileBean();
+                        bean.setFilePath(mAudioStringList.get(i));
+                        list.add(bean) ;
+                    }
+
+                    AudioListDialog dialog = new AudioListDialog(getActivity(),list) ;
+                    dialog.setCanceledOnTouchOutside(true);
                     dialog.show() ;
                 }
             }
@@ -71,7 +85,16 @@ public class ClassicStorageDetailFragment extends Fragment {
             public void onClick(View view) {
 
                 if(mVideoStringList != null && !mVideoStringList.isEmpty()){
-                    VideoListDialog dialog = new VideoListDialog(getActivity(),mVideoStringList) ;
+
+                    List<FileBean> list = new ArrayList<>() ;
+                    for(int i = 0 ;i < mVideoStringList.size() ;i++){
+                        FileBean bean = new FileBean();
+                        bean.setFilePath(mVideoStringList.get(i));
+                        list.add(bean) ;
+                    }
+
+                    VideoListDialog dialog = new VideoListDialog(getActivity(),list) ;
+                    dialog.setCanceledOnTouchOutside(true);
                     dialog.show() ;
                 }
 
@@ -110,13 +133,31 @@ public class ClassicStorageDetailFragment extends Fragment {
 
         View view  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_jd_detail,null) ;
         initView(view) ;
+        EventBus.getDefault().register(this);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
     }
+    @Subscriber
+    public void onEventMainThread(final MsgEvent event){
+        /*if(event.getType() == 15){ // 活动详情
+            String msg = event.getMsg() ;
 
+            Intent intent = new Intent() ;
+            MusicControl musicControl = new MusicControl() ;
+            musicControl.setmAction(1);
+            musicControl.setFilePath(Constant.FILE_HOST+msg);
+            getActivity().sendBroadcast(intent) ;
+        }*/
+    }
 
 }
