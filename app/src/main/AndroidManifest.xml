@@ -87,7 +87,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.ActivitysDetailActivity"></activity>
+        <activity android:name=".ui.ActivitysDetailActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            ></activity>
         <service android:name="com.zztek.mediaservier.BgMusicControlService"></service>
 
     </application>

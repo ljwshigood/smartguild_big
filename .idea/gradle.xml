@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/async-http" />
             <option value="$PROJECT_DIR$/jcvideoplayer-lib" />
             <option value="$PROJECT_DIR$/mediaserver" />
+            <option value="$PROJECT_DIR$/slicemenulib" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

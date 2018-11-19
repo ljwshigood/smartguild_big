@@ -10,6 +10,7 @@
       <module fileurl="file://D:\souce_test\smartguild_big\jcvideoplayer-lib\jcvideoplayer-lib.iml" filepath="D:\souce_test\smartguild_big\jcvideoplayer-lib\jcvideoplayer-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/mediaserver/mediaserver.iml" filepath="$PROJECT_DIR$/mediaserver/mediaserver.iml" />
       <module fileurl="file://D:\souce_test\smartguild_big\mediaserver\mediaserver.iml" filepath="D:\souce_test\smartguild_big\mediaserver\mediaserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/slicemenulib/slicemenulib.iml" filepath="$PROJECT_DIR$/slicemenulib/slicemenulib.iml" />
       <module fileurl="file://$PROJECT_DIR$/smartguild_big.iml" filepath="$PROJECT_DIR$/smartguild_big.iml" />
       <module fileurl="file://D:\souce_test\smartguild_big\smartguild_big.iml" filepath="D:\souce_test\smartguild_big\smartguild_big.iml" />
     </modules>

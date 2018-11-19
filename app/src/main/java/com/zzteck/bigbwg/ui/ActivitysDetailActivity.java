@@ -2,10 +2,14 @@ package com.zzteck.bigbwg.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.TextView;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.zzteck.bigbwg.R;
+import com.zzteck.bigbwg.fragment.LeftFragment;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
@@ -23,6 +27,33 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         mJcVideoPlayerStandard.setUp(videoPath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
     }
 
+    private SlidingMenu menu ;
+
+    public void sliceToggle(){
+        menu.toggle();
+    }
+
+    public void initSliceMenu() {
+
+        menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.LEFT);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+
+        // 左边
+        menu.setMenu(R.layout.left_menu);
+
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+
+        Fragment leftFragment = LeftFragment.newInstance("左边");
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.left, leftFragment);
+        ft.commit();
+
+    }
+
 
     private void initData(){
 
@@ -37,6 +68,7 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         setContentView(R.layout.fragment_video_detail);
         initView() ;
         initData() ;
+        initSliceMenu() ;
     }
 
     @Override

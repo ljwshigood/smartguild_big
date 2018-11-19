@@ -17,7 +17,10 @@ import android.widget.ListView;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
 import com.zzteck.bigbwg.bean.FileBean;
+import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zztek.mediaservier.MusicControl;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.List;
 
@@ -64,10 +67,12 @@ public class AudioListDialog extends Dialog {
     public void setOnDismissListener(@Nullable OnDismissListener listener) {
         super.setOnDismissListener(listener);
 
-        Intent intent = new Intent() ;
+        EventBus.getDefault().post(new MsgEvent("http://video.jiecao.fm/11/23/xin/%E5%81%87%E4%BA%BA.mp4",5));
+
+       /* Intent intent = new Intent() ;
         MusicControl musicControl = new MusicControl() ;
         musicControl.setmAction(3);
-        mContext.sendBroadcast(intent) ;
+        mContext.sendBroadcast(intent) ;*/
 
     }
 }

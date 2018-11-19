@@ -41,6 +41,23 @@ public class JCVideoPlayerStandard extends JCVideoPlayer {
     protected DismissControlViewTimerTask mDismissControlViewTimerTask;
 
 
+    public interface  IToggleListener{
+
+        public void toggleListener() ;
+
+    }
+
+    public IToggleListener getmIToggleLister() {
+        return mIToggleLister;
+    }
+
+    public void setmIToggleLister(IToggleListener mIToggleLister) {
+        this.mIToggleLister = mIToggleLister;
+    }
+
+    private IToggleListener mIToggleLister ;
+
+
     public JCVideoPlayerStandard(Context context) {
         super(context);
     }
