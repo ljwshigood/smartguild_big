@@ -88,13 +88,25 @@ public class ViewHelper {
      * @return 图片标注
      */
     public static FMImageMarker buildImageMarker(Resources resources, FMMapCoord mapCoord) {
-        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_mark);
+        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_marker_start);
         FMImageMarker imageMarker = new FMImageMarker(mapCoord, bitmap);
         //设置图片宽高
         imageMarker.setMarkerWidth(90);
         imageMarker.setMarkerHeight(90);
         //设置在模型之上
         imageMarker.setFMImageMarkerOffsetMode(FMImageMarker.FMImageMarkerOffsetMode.FMNODE_MODEL_ABOVE);
+        return imageMarker;
+    }
+
+    public static FMImageMarker buildImageMarker(Resources resources, FMMapCoord mapCoord, int resId) {
+        Bitmap bitmap = BitmapFactory.decodeResource(resources, resId);
+        FMImageMarker imageMarker = new FMImageMarker(mapCoord, bitmap);
+        //设置图片宽高
+        imageMarker.setMarkerWidth(90);
+        imageMarker.setMarkerHeight(90);
+        //设置图片在模型之上
+        imageMarker.setFMImageMarkerOffsetMode(FMImageMarker.FMImageMarkerOffsetMode.FMNODE_CUSTOM_HEIGHT);
+        //imageMarker.setCustomOffsetHeight(2.0f);
         return imageMarker;
     }
 

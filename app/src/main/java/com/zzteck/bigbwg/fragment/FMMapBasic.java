@@ -14,20 +14,28 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.fengmap.android.FMErrorMsg;
+import com.fengmap.android.analysis.navi.FMNaviAnalyser;
+import com.fengmap.android.analysis.navi.FMNaviResult;
 import com.fengmap.android.data.OnFMDownloadProgressListener;
+import com.fengmap.android.exception.FMObjectException;
 import com.fengmap.android.map.FMGroupInfo;
 import com.fengmap.android.map.FMMap;
 import com.fengmap.android.map.FMMapExtent;
 import com.fengmap.android.map.FMMapInfo;
 import com.fengmap.android.map.FMMapUpgradeInfo;
 import com.fengmap.android.map.FMMapView;
+import com.fengmap.android.map.FMPickMapCoordResult;
 import com.fengmap.android.map.FMViewMode;
 import com.fengmap.android.map.animator.FMLinearInterpolator;
+import com.fengmap.android.map.event.OnFMMapClickListener;
 import com.fengmap.android.map.event.OnFMMapInitListener;
 import com.fengmap.android.map.event.OnFMSwitchGroupListener;
 import com.fengmap.android.map.geometry.FMMapCoord;
 import com.fengmap.android.map.layer.FMImageLayer;
+import com.fengmap.android.map.layer.FMLineLayer;
 import com.fengmap.android.map.marker.FMImageMarker;
+import com.fengmap.android.map.marker.FMLineMarker;
+import com.fengmap.android.map.marker.FMSegment;
 import com.joysuch.sdk.IndoorLocateListener;
 import com.joysuch.sdk.locate.JSLocateManager;
 import com.joysuch.sdk.locate.JSPosition;
@@ -35,14 +43,15 @@ import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.utils.FileUtils;
 import com.zzteck.bigbwg.utils.ViewHelper;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  *
- * @version 2.0.0
  */
-public class FMMapBasic extends Fragment implements OnFMMapInitListener ,CompoundButton.OnCheckedChangeListener{
+
+public class FMMapBasic extends Fragment implements OnFMMapInitListener ,CompoundButton.OnCheckedChangeListener,OnFMMapClickListener {
 
     private FMMap mMap;
 
@@ -74,22 +83,15 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
             super.handleMessage(msg);
             String aa = (String) msg.obj;
             Toast.makeText(getActivity(),"Location info : "+aa,1).show() ;
-            FMMapCoord model = new FMMapCoord(mLocationPoint.x,mLocationPoint.y) ;
-            FMImageMarker imageMarker = ViewHelper.buildImageMarker(getResources(), model);
-            mImageLayers.get(mCurrentFloorID).addMarker(imageMarker);
+            createStartImageMarker();
         }
     };
 
-    private FMMapCoord mLocationPoint ;
-
-    //TODO 定位坐标转化
     private void coordCovert(JSPosition position, FMMap map){
         FMMapExtent ex = map.getFMMapExtent();
         //locationPt为地图坐标，position为定位坐标，注意单位为米
-        mLocationPoint = new FMMapCoord(ex.getMinX() + position.getxMeters(), ex.getMaxY() - position.getyMeters(),2.0);
+        mSartCoord = new FMMapCoord(ex.getMinX() + position.getxMeters(), ex.getMaxY() - position.getyMeters(),2.0);
     }
-
-    private int mCurrentFloorID ;
 
     IndoorLocateListener indoorLocateListener = new IndoorLocateListener() {
 
@@ -111,7 +113,7 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
             coordCovert(position,mMap) ;
 
 
-            mCurrentFloorID = position.getFloorID() ;
+            mStartGroupId = position.getFloorID() ;
 
             Message msg = new Message();
 
@@ -133,6 +135,9 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
         // JSLocateManager.getInstance().setLocateTimesSecond(2);//设置每秒定位次数
         JSLocateManager.getInstance().init(getActivity());
 
+
+        mMap.setOnFMMapClickListener(this);
+
         mHandler.sendEmptyMessageDelayed(0,2000) ;
 
         return view;
@@ -152,6 +157,10 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
         mMap.openMapById(FileUtils.DEFAULT_MAP_ID,true);
     }
 
+    /**
+     * 起点图层
+     */
+    protected FMImageLayer mStartImageLayer;
 
 
     private FMImageLayer mImageLayer;
@@ -171,6 +180,17 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
         //加载在线主题文件
        // mMap.loadThemeById(FMMap.DEFAULT_THEME_CANDY);
 
+        mLineLayer = mMap.getFMLayerProxy().getFMLineLayer();
+        mMap.addLayer(mLineLayer);
+
+        //导航分析
+        try {
+            mNaviAnalyser = FMNaviAnalyser.getFMNaviAnalyserById(FileUtils.DEFAULT_MAP_ID);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (FMObjectException e) {
+            e.printStackTrace();
+        }
 
         FMMapInfo mapInfo = mMap.getFMMapInfo();
         ArrayList<FMGroupInfo> groups = mapInfo.getGroups();
@@ -268,4 +288,148 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
             });
         }
     }
+
+    protected FMLineLayer mLineLayer;
+
+    protected FMNaviAnalyser mNaviAnalyser;
+
+    /**
+     * 清除线图层
+     */
+    protected void clearLineLayer() {
+        if (mLineLayer != null) {
+            mLineLayer.removeAll();
+        }
+    }
+
+    /**
+     * 清除起点图层
+     */
+    protected void clearStartImageLayer() {
+        if (mStartImageLayer != null) {
+            mStartImageLayer.removeAll();
+            mMap.removeLayer(mStartImageLayer); // 移除图层
+            mStartImageLayer = null;
+        }
+    }
+
+    /**
+     * 清除终点图层
+     */
+    protected void clearEndImageLayer() {
+        if (mEndImageLayer != null) {
+            mEndImageLayer.removeAll();
+            mMap.removeLayer(mEndImageLayer); // 移除图层
+
+            mEndImageLayer = null;
+        }
+    }
+
+
+    protected void clear() {
+        clearLineLayer();
+        clearStartImageLayer();
+        clearEndImageLayer();
+    }
+
+
+    /**
+     * 添加线标注
+     */
+    protected void addLineMarker() {
+        ArrayList<FMNaviResult> results = mNaviAnalyser.getNaviResults();
+        // 填充导航数据
+        ArrayList<FMSegment> segments = new ArrayList<>();
+        for (FMNaviResult r : results) {
+            int groupId = r.getGroupId();
+            FMSegment s = new FMSegment(groupId, r.getPointList());
+            segments.add(s);
+        }
+        //添加LineMarker
+        FMLineMarker lineMarker = new FMLineMarker(segments);
+        lineMarker.setLineWidth(1f);
+        mLineLayer.addMarker(lineMarker);
+    }
+
+    protected int mStartGroupId;
+
+    /**
+     * 创建起点图标
+     */
+    protected void createStartImageMarker() {
+        clearStartImageLayer();
+        // 添加起点图层
+        mStartImageLayer = new FMImageLayer(mMap, mStartGroupId);
+        mMap.addLayer(mStartImageLayer);
+        // 标注物样式
+        FMImageMarker imageMarker = ViewHelper.buildImageMarker(getResources(), mSartCoord, R.drawable.ic_marker_start);
+        mStartImageLayer.addMarker(imageMarker);
+    }
+
+    protected FMImageLayer mEndImageLayer;
+
+    protected int mEndGroupId;
+
+    /**
+     * 创建终点图层
+     */
+    protected void createEndImageMarker() {
+        clearEndImageLayer();
+        // 添加起点图层
+        mEndImageLayer = new FMImageLayer(mMap, mEndGroupId);
+        mMap.addLayer(mEndImageLayer);
+        // 标注物样式
+        FMImageMarker imageMarker = ViewHelper.buildImageMarker(getResources(), mEndCoord, R.drawable.ic_marker_end);
+        mEndImageLayer.addMarker(imageMarker);
+    }
+
+    protected FMMapCoord mSartCoord ;
+
+    protected FMMapCoord mEndCoord ;
+
+    @Override
+    public void onMapClick(float x, float y) {
+
+        // 获取屏幕点击位置的地图坐标
+        final FMPickMapCoordResult mapCoordResult = mMap.pickMapCoord(x, y);
+        if (mapCoordResult == null) {
+            return;
+        }
+
+        // 起点
+        /*if (mSartCoord == null) {
+            clear();
+
+            mSartCoord = mapCoordResult.getMapCoord();
+            mStartGroupId = mapCoordResult.getGroupId();
+            createStartImageMarker();
+            return;
+        }*/
+
+        // 终点
+        if (mEndCoord == null) {
+            clear();
+            mEndCoord = mapCoordResult.getMapCoord();
+            mEndGroupId = mapCoordResult.getGroupId();
+            createEndImageMarker();
+        }
+
+        analyzeNavigation();
+
+        // 画完置空
+        mEndCoord = null;
+    }
+
+    /**
+     * 开始分析导航
+     */
+    private void analyzeNavigation() {
+        int type = mNaviAnalyser.analyzeNavi(mStartGroupId, mSartCoord, mEndGroupId, mEndCoord,
+                FMNaviAnalyser.FMNaviModule.MODULE_SHORTEST);
+        if (type == FMNaviAnalyser.FMRouteCalcuResult.ROUTE_SUCCESS) {
+            addLineMarker();
+        }
+    }
+
+
 }
