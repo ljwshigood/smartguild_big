@@ -34,7 +34,7 @@ public class FileUtils {
      */
    // public static final String DEFAULT_MAP_ID = "10347";
 
-    public static final String DEFAULT_MAP_ID = "f200326";
+    public static final String DEFAULT_MAP_ID = "f200539";
 
     /**
      * 默认主题

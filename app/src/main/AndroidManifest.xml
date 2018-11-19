@@ -54,6 +54,10 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <!-- 腾讯定位 sdk 要求的权限 (结束) -->
 
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
     <application
         android:name=".App.App"
         android:allowBackup="true"
@@ -67,9 +71,13 @@
             android:name="TencentMapSDK"
             android:value="QNQBZ-3NIWU-55CVA-27K6J-LCCEJ-KVBUX"/>
 
+        <!--<meta-data
+            android:name="com.fengmap.mapapi.appkey"
+            android:value="773e177e4c7a697f6f1fee3ed306dbcf"/>-->
+
         <meta-data
             android:name="com.fengmap.mapapi.appkey"
-            android:value="773e177e4c7a697f6f1fee3ed306dbcf"/>
+            android:value="00ef65d17b8069405da5ec4d1b550008"/>
 
         <activity android:name=".ui.MainActivity">
             <intent-filter>

@@ -46,4 +46,5 @@ dependencies {
     implementation project(':jcvideoplayer-lib')
     implementation files('libs/TencentLocationSdk_v7.1.4.3_r4aa8ac63_20180911_165428.jar')
     implementation files('libs/fengmap-2.1.3.jar')
+    implementation files('libs/JoysuchSDK_V2.7.0_pro.jar')
 }

@@ -88,7 +88,7 @@ public class ViewHelper {
      * @return 图片标注
      */
     public static FMImageMarker buildImageMarker(Resources resources, FMMapCoord mapCoord) {
-        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher);
+        Bitmap bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_mark);
         FMImageMarker imageMarker = new FMImageMarker(mapCoord, bitmap);
         //设置图片宽高
         imageMarker.setMarkerWidth(90);
