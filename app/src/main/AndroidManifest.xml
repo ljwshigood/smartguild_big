@@ -87,6 +87,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.AudioDetailActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            ></activity>
+
         <activity android:name=".ui.ActivitysDetailActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             ></activity>
