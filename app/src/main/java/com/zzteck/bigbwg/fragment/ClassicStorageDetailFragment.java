@@ -34,6 +34,8 @@ import com.zzteck.bigbwg.bean.NearWenWuBean;
 import com.zzteck.bigbwg.dialog.AudioListDialog;
 import com.zzteck.bigbwg.dialog.VideoListDialog;
 import com.zzteck.bigbwg.impl.IActManager;
+import com.zzteck.bigbwg.ui.ActivitysDetailActivity;
+import com.zzteck.bigbwg.ui.AudioDetailActivity;
 import com.zzteck.bigbwg.utils.Constant;
 import com.zzteck.bigbwg.webmanager.WebActManager;
 import com.zztek.mediaservier.MusicControl;
@@ -41,6 +43,7 @@ import com.zztek.mediaservier.MusicControl;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,16 +72,10 @@ public class ClassicStorageDetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(mAudioStringList != null && !mAudioStringList.isEmpty()){
-                    List<FileBean> list = new ArrayList<>() ;
-                    for(int i = 0 ;i < mAudioStringList.size() ;i++){
-                        FileBean bean = new FileBean();
-                        bean.setFilePath(mAudioStringList.get(i));
-                        list.add(bean) ;
-                    }
 
-                    AudioListDialog dialog = new AudioListDialog(getActivity(),list) ;
-                    dialog.setCanceledOnTouchOutside(true);
-                    dialog.show() ;
+                    Intent intent = new Intent(getActivity(), AudioDetailActivity.class) ;
+                    intent.putExtra("filelist", (Serializable) mAudioStringList) ;
+                    startActivity(intent);
                 }
             }
         });
@@ -89,7 +86,12 @@ public class ClassicStorageDetailFragment extends Fragment {
 
                 if(mVideoStringList != null && !mVideoStringList.isEmpty()){
 
-                    List<FileBean> list = new ArrayList<>() ;
+
+                    Intent intent = new Intent(getActivity(), ActivitysDetailActivity.class) ;
+                    intent.putExtra("filelist", (Serializable) mAudioStringList) ;
+                    startActivity(intent);
+
+                    /*List<FileBean> list = new ArrayList<>() ;
                     for(int i = 0 ;i < mVideoStringList.size() ;i++){
                         FileBean bean = new FileBean();
                         bean.setFilePath(mVideoStringList.get(i));
@@ -98,7 +100,7 @@ public class ClassicStorageDetailFragment extends Fragment {
 
                     VideoListDialog dialog = new VideoListDialog(getActivity(),list) ;
                     dialog.setCanceledOnTouchOutside(true);
-                    dialog.show() ;
+                    dialog.show() ;*/
                 }
 
             }

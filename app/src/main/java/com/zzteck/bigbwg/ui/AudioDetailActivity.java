@@ -66,12 +66,33 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
         }
 
         BgMusicControlService.mMusicItemList = list ;
+
+
+
+        List<FileBean> list1 = new ArrayList<>() ;
+        for(int i = 0 ;i < mAudioStringList.size() ;i++){
+            FileBean bean1 = new FileBean();
+            bean1.setFilePath(mAudioStringList.get(i));
+            list1.add(bean1) ;
+        }
+
+        FileAdapter adapter = new FileAdapter(mContext,list1,0,null) ;
+        mLvAudioList.setAdapter(adapter);
+        mLvAudioList.setOnItemClickListener(adapter);
+        adapter.setmIMediaOnItemListener(new FileAdapter.IMediaOnItemListener() {
+            @Override
+            public void medidaOnItem(String filePath) {
+                MusicManager.getInstance(mContext).playMusic(mAudioStringList.get(0),0) ;
+            }
+        }) ;
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_audio_detail);
+        mContext = AudioDetailActivity.this ;
         initView() ;
         initData() ;
 
@@ -106,8 +127,12 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
 
     private ListView mLvAudioList ;
 
+    private ImageView mIvDelete ;
+
     private void initView(){
 
+        mIvDelete = findViewById(R.id.iv_delete) ;
+        mIvDelete.setOnClickListener(this);
         mTvCurrentTime = findViewById(R.id.tv_start_time) ;
         mTvTotalTime = findViewById(R.id.tv_end_time) ;
         mProgressBar = findViewById(R.id.sb_record_seek) ;
@@ -121,16 +146,6 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
         mIvNext.setOnClickListener(this);
 
         mLvAudioList = findViewById(R.id.lv_audio_list) ;
-        List<FileBean> list = new ArrayList<>() ;
-        for(int i = 0 ;i < mAudioStringList.size() ;i++){
-            FileBean bean = new FileBean();
-            bean.setFilePath(mAudioStringList.get(i));
-            list.add(bean) ;
-        }
-
-        FileAdapter adapter = new FileAdapter(mContext,list,0,null) ;
-        mLvAudioList.setAdapter(adapter);
-        mLvAudioList.setOnItemClickListener(adapter);
     }
 
     private boolean isFirstPlayer = true;
@@ -138,6 +153,9 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_delete :
+                finish();
+                break ;
             case R.id.cb_playAndPause:
                 if (isFirstPlayer) {
                     MusicManager.getInstance(mContext).playMusic(mAudioStringList.get(0),0) ;

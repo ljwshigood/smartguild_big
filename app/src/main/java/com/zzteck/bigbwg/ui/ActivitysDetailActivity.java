@@ -77,15 +77,7 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         ft.replace(R.id.left, leftFragment);
         ft.commit();
 
-    }
 
-
-    private void initData(){
-
-        Intent intent = getIntent() ;
-        String filePath = intent.getStringExtra("filePath") ;
-        mJcVideoPlayerStandard.setUp(filePath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
-        mAudioStringList = (List<String>) intent.getSerializableExtra("filelist");
         List<FileBean> list = new ArrayList<>() ;
         for(int i = 0 ;i < mAudioStringList.size() ;i++){
             FileBean bean = new FileBean();
@@ -96,6 +88,23 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         FileAdapter adapter = new FileAdapter(mContext,list,0,null) ;
         mLvVideoDetail.setAdapter(adapter);
         mLvVideoDetail.setOnItemClickListener(adapter);
+
+        adapter.setmIMediaOnItemListener(new FileAdapter.IMediaOnItemListener() {
+            @Override
+            public void medidaOnItem(String filePath) {
+                mJcVideoPlayerStandard.setUp(filePath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
+            }
+        });
+
+    }
+
+
+    private void initData(){
+
+        Intent intent = getIntent() ;
+       /* String filePath = intent.getStringExtra("filePath") ;
+        mJcVideoPlayerStandard.setUp(filePath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");*/
+        mAudioStringList = (List<String>) intent.getSerializableExtra("filelist");
     }
 
     @Override
@@ -105,7 +114,7 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         mContext = ActivitysDetailActivity.this ;
         initView() ;
         initData() ;
-        initSliceMenu() ;
+       // initSliceMenu() ;
     }
 
     @Override

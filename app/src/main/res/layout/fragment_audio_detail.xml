@@ -5,25 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="30"
+        android:layout_weight="40"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="vertical">
 
         <ListView
             android:id="@+id/lv_audio_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></ListView>
-    </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@mipmap/ic_delete"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="70"
+        android:layout_weight="60"
         android:orientation="vertical">
 
         <LinearLayout
@@ -104,7 +120,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:button="@drawable/cb_music_status_selector"
+                        android:button="@null"
+                        android:background="@drawable/cb_music_status_selector"
                         android:gravity="center"></CheckBox>
 
                     <ImageView

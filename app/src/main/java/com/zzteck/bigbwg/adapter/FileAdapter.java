@@ -120,6 +120,20 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
         mContext.startActivity(mIntent);
     }
 
+    public IMediaOnItemListener getmIMediaOnItemListener() {
+        return mIMediaOnItemListener;
+    }
+
+    public void setmIMediaOnItemListener(IMediaOnItemListener mIMediaOnItemListener) {
+        this.mIMediaOnItemListener = mIMediaOnItemListener;
+    }
+
+    private IMediaOnItemListener mIMediaOnItemListener ;
+
+    public interface  IMediaOnItemListener{
+        public void medidaOnItem(String filePath) ;
+    }
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FileBean filePath = mFileList.get(position) ;
@@ -127,11 +141,9 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
             for(int i = 0 ;i < mFileList.size() ;i++){
                 if(i == position){
                     mFileList.get(i).setSelect(true);
-
-
-                    EventBus.getDefault().post(new MsgEvent("http://video.jiecao.fm/11/23/xin/%E5%81%87%E4%BA%BA.mp4",5));
-
-                    //playAudio(Constant.FILE_HOST+filePath.getFilePath());
+                    if(mIMediaOnItemListener != null){
+                        mIMediaOnItemListener.medidaOnItem(Constant.FILE_HOST+filePath.getFilePath());
+                    }
                 }else{
                     mFileList.get(i).setSelect(false);
                 }
