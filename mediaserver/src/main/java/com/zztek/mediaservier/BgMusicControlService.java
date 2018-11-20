@@ -20,6 +20,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 
+import org.simple.eventbus.EventBus;
+
 
 public class BgMusicControlService extends Service implements OnBufferingUpdateListener, OnCompletionListener, OnPreparedListener {
 
@@ -222,15 +224,13 @@ public class BgMusicControlService extends Service implements OnBufferingUpdateL
 			if (mPlayer == null) {
 				return;
 			}
-			
 			long currentTime = mPlayer.getCurrentPosition();
 			mMusicControl.setCurrentTime(currentTime) ;
 			mMusicControl.setTotalTime(duration);
 			mMusicControl.setPlayStatus(mPlayer.isPlaying()) ;
-			
-			intentUI.putExtra("updateUI",mMusicControl);  
-            sendBroadcast(intentUI);  
-			
+
+			EventBus.getDefault().post(mMusicControl);
+
 			mHandler.postDelayed(updateSb, 1000);
 		}
 	};
@@ -259,6 +259,7 @@ public class BgMusicControlService extends Service implements OnBufferingUpdateL
 			mPlayer.setOnBufferingUpdateListener(this);
 			mPlayer.setOnPreparedListener(this);
 			mPlayer.setOnCompletionListener(this);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

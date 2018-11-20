@@ -1,17 +1,34 @@
 package com.zzteck.bigbwg.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
+import com.zzteck.bigbwg.bean.FileBean;
 import com.zzteck.bigbwg.fragment.LeftFragment;
+import com.zztek.mediaservier.BgMusicControlService;
+import com.zztek.mediaservier.MusicBean;
+import com.zztek.mediaservier.MusicControl;
+import com.zztek.mediaservier.MusicManager;
+
+import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
@@ -19,27 +36,126 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
 
     private static final String TAG = "VideoDetailFragment";
 
-    private void initData(){
+    private List<String> mAudioStringList ;
 
+    private Context mContext ;
+
+    private TextView mTvCurrentTime ;
+
+    private TextView mTvTotalTime ;
+
+    private ProgressBar mProgressBar ;
+
+    private CheckBox mCbStatus ;
+
+    private ImageView mIvPre ;
+
+    private ImageView mIvNext ;
+
+    private void initData(){
+        Intent intent = getIntent() ;
+
+        mAudioStringList = (List<String>) intent.getSerializableExtra("filelist");
+        List<MusicBean> list = new ArrayList<>() ;
+
+        for(int i = 0 ;i < mAudioStringList.size() ;i++){
+            String filePath = mAudioStringList.get(i) ;
+            MusicBean bean = new MusicBean() ;
+            bean.setFilePath(filePath) ;
+            list.add(bean) ;
+        }
+
+        BgMusicControlService.mMusicItemList = list ;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_video_detail);
+        setContentView(R.layout.fragment_audio_detail);
         initView() ;
         initData() ;
+
+        EventBus.getDefault().register(this);
+    }
+
+    public String formatSecondTime(int millisecond) {
+        if (millisecond == 0) {
+            return "00:00";
+        }
+        millisecond = millisecond / 1000;
+        int m = millisecond / 60 % 60;
+        int s = millisecond % 60;
+        return (m > 9 ? m : "0" + m) + ":" + (s > 9 ? s : "0" + s);
+    }
+
+
+    @Subscriber
+    public void onEventMainThread(final MusicControl messageInfo){
+        mTvTotalTime.setText(formatSecondTime((int)messageInfo.getTotalTime()));
+        mTvCurrentTime.setText(formatSecondTime((int)messageInfo.getCurrentTime()));
+
+        mProgressBar.setMax((int)messageInfo.getTotalTime()) ;
+        mProgressBar.setProgress((int)messageInfo.getCurrentTime()) ;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private ListView mLvAudioList ;
 
     private void initView(){
-      /*  FileAdapter adapter = new FileAdapter(AudioDetailActivity.this,1,null,null) ;
-        mLvAudioList.setAdapter(adapter) ;*/
+
+        mTvCurrentTime = findViewById(R.id.tv_start_time) ;
+        mTvTotalTime = findViewById(R.id.tv_end_time) ;
+        mProgressBar = findViewById(R.id.sb_record_seek) ;
+
+        mCbStatus = findViewById(R.id.cb_playAndPause) ;
+        mIvPre = findViewById(R.id.iv_playPre) ;
+        mIvNext = findViewById(R.id.iv_playNext) ;
+
+        mCbStatus.setOnClickListener(this);
+        mIvPre.setOnClickListener(this);
+        mIvNext.setOnClickListener(this);
+
+        mLvAudioList = findViewById(R.id.lv_audio_list) ;
+        List<FileBean> list = new ArrayList<>() ;
+        for(int i = 0 ;i < mAudioStringList.size() ;i++){
+            FileBean bean = new FileBean();
+            bean.setFilePath(mAudioStringList.get(i));
+            list.add(bean) ;
+        }
+
+        FileAdapter adapter = new FileAdapter(mContext,list,0,null) ;
+        mLvAudioList.setAdapter(adapter);
+        mLvAudioList.setOnItemClickListener(adapter);
     }
+
+    private boolean isFirstPlayer = true;
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.cb_playAndPause:
+                if (isFirstPlayer) {
+                    MusicManager.getInstance(mContext).playMusic(mAudioStringList.get(0),0) ;
+                    isFirstPlayer = false ;
+                }else{
+                    if (mCbStatus.isChecked()) {
+                        MusicManager.getInstance(mContext).resumeMusic();
+                    } else {
+                        MusicManager.getInstance(mContext).pauseMusic();
+                    }
+                }
+                break;
+            case R.id.iv_playPre:
+                MusicManager.getInstance(mContext).priorMusic();
+                break;
+            case R.id.iv_playNext :
+                MusicManager.getInstance(mContext).nextMusic();
+                break ;
+        }
     }
 }
