@@ -14,5 +14,9 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="AnimationLeftFade">
+        <item name="android:windowEnterAnimation">@anim/in_lefttoright</item>
+        <item name="android:windowExitAnimation">@anim/out_righttoleft</item>
+    </style>
 
 </resources>
