@@ -99,8 +99,9 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         setContentView(R.layout.fragment_video_detail);
         mContext = ActivitysDetailActivity.this ;
         initView() ;
-        initPopupWindow();
         initData() ;
+        initPopupWindow();
+
        // initSliceMenu() ;
     }
 
