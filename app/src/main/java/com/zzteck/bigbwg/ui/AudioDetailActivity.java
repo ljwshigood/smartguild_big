@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
 import com.zzteck.bigbwg.bean.FileBean;
@@ -82,11 +81,13 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
         adapter.setmIMediaOnItemListener(new FileAdapter.IMediaOnItemListener() {
             @Override
             public void medidaOnItem(String filePath) {
-                MusicManager.getInstance(mContext).playMusic(mAudioStringList.get(0),0) ;
+                isFirstPlayer = false ;
+                MusicManager.getInstance(mContext).playMusic(filePath,0) ;
             }
         }) ;
 
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,9 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
+        MusicManager.getInstance(mContext).releaseMedia();
+
     }
 
     private ListView mLvAudioList ;

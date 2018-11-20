@@ -443,7 +443,7 @@ public abstract class JCVideoPlayer extends FrameLayout implements View.OnClickL
         if (oldT != null) {
             vp.removeView(oldT);
         }
-        showSupportActionBar(getContext());
+//        showSupportActionBar(getContext());
     }
 
     public void onAutoCompletion() {
@@ -485,7 +485,7 @@ public abstract class JCVideoPlayer extends FrameLayout implements View.OnClickL
         mAudioManager.abandonAudioFocus(onAudioFocusChangeListener);
         JCUtils.scanForActivity(getContext()).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         clearFullscreenLayout();
-        JCUtils.getAppCompActivity(getContext()).setRequestedOrientation(NORMAL_ORIENTATION);
+       // JCUtils.getAppCompActivity(getContext()).setRequestedOrientation(NORMAL_ORIENTATION);
 
         JCMediaManager.textureView = null;
         JCMediaManager.savedSurfaceTexture = null;

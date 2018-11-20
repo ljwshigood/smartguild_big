@@ -1,1 +1,1 @@
-include ':app', ':async-http', ':mediaserver', ':jcvideoplayer-lib', ':slicemenulib'
+include ':app', ':async-http', ':mediaserver', ':jcvideoplayer-lib'

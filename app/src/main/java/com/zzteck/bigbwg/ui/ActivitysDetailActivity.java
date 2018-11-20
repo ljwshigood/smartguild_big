@@ -1,6 +1,5 @@
 package com.zzteck.bigbwg.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -17,13 +16,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
 import com.zzteck.bigbwg.bean.FileBean;
 import com.zzteck.bigbwg.fragment.LeftFragment;
-import com.zztek.mediaservier.BgMusicControlService;
-import com.zztek.mediaservier.MusicBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +38,8 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         mIvLeft = findViewById(R.id.iv_left) ;
         mJcVideoPlayerStandard = findViewById(R.id.jc_video);
         mIvLeft.setOnClickListener(this);
+        mIvBack = findViewById(R.id.iv_delete) ;
+        mIvBack.setOnClickListener(this);
     }
 
     private List<String> mAudioStringList ;
@@ -52,37 +50,10 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         mJcVideoPlayerStandard.setUp(videoPath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
     }
 
-    private SlidingMenu menu ;
 
     private ImageView mIvLeft ;
 
-    public void sliceToggle(){
-        menu.toggle();
-    }
-
-    public void initSliceMenu() {
-
-        menu = new SlidingMenu(this);
-        menu.setMode(SlidingMenu.LEFT);
-        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-
-        // 左边
-        menu.setMenu(R.layout.left_menu);
-
-        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-
-        View view = menu.getMenu() ;
-
-
-        Fragment leftFragment = LeftFragment.newInstance("左边");
-
-        FragmentManager fm = getSupportFragmentManager();
-
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.left, leftFragment);
-        ft.commit();
-
-    }
+    private ImageView mIvBack ;
 
 
     private void initData(){
@@ -101,13 +72,14 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         initView() ;
         initData() ;
         initPopupWindow();
-
-       // initSliceMenu() ;
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.iv_delete :
+                finish();
+                break  ;
             case R.id.iv_left :
                 if(popupWindow.isShowing()){
                     popupWindow.dismiss();
@@ -138,7 +110,7 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
     protected void initPopupWindow(){
 
         View popupWindowView = getLayoutInflater().inflate(R.layout.left_menu, null);
-        popupWindow = new PopupWindow(popupWindowView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.FILL_PARENT, true);
+        popupWindow = new PopupWindow(popupWindowView, 250, ViewGroup.LayoutParams.FILL_PARENT, true);
 
         popupWindow.setAnimationStyle(R.style.AnimationLeftFade);
 

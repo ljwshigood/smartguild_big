@@ -80,6 +80,8 @@ public class JCVideoPlayerStandard extends JCVideoPlayer {
         backButton.setOnClickListener(this);
         tinyBackImageView.setOnClickListener(this);
 
+        backButton.setVisibility(View.GONE);
+
     }
 
     @Override
