@@ -65,7 +65,7 @@ public class WelcomeFragment extends Fragment implements  IActManager{
         mLlShouYe.setVisibility(View.VISIBLE) ;
         try {
             JSONArray jsonArray = new JSONArray(bean.getData().getImgs()) ;
-            if(jsonArray != null && jsonArray.length() > 1){
+            if(jsonArray != null && jsonArray.length() > 0){
                 Glide.with(App.getContext()).load(Constant.FILE_HOST+jsonArray.get(0).toString()).placeholder(R.mipmap.ic_launcher).into(mIvLogo);
             }
         } catch (JSONException e) {
