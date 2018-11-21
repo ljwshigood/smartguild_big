@@ -49,4 +49,5 @@ dependencies {
     implementation files('libs/JoysuchSDK_V2.7.0_pro.jar')
    // implementation project(':slicemenulib')
     compile 'org.simple:androideventbus:1.0.5.1'
+    compile 'crab.baidu.crabsdk:crabsdk:7.0@aar'
 }
