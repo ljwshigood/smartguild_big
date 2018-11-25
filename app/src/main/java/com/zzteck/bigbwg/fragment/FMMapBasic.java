@@ -1,5 +1,6 @@
 package com.zzteck.bigbwg.fragment;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,8 @@ import com.fengmap.android.map.marker.FMSegment;
 import com.joysuch.sdk.IndoorLocateListener;
 import com.joysuch.sdk.locate.JSLocateManager;
 import com.joysuch.sdk.locate.JSPosition;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.utils.FileUtils;
 import com.zzteck.bigbwg.utils.ViewHelper;
@@ -46,6 +49,7 @@ import com.zzteck.bigbwg.utils.ViewHelper;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 /**
  *
@@ -129,12 +133,34 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
         View view  = LayoutInflater.from(getContext()).inflate(R.layout.activity_map_basic,null) ;
         openMapByPath(view);
 
-        JSLocateManager.getInstance().setOnIndoorLocateListener(indoorLocateListener);
-        // SKYLocateManager.getInstance().setOfflineMode();//数据内置APP，使用离线模式
-        // JSLocateManager.getInstance().setRootFolderName("Joysuch");//设置数据存储位置
-        // JSLocateManager.getInstance().setLocateTimesSecond(2);//设置每秒定位次数
-        JSLocateManager.getInstance().init(getActivity());
 
+
+        RxPermissions rxPermissions1 = new RxPermissions(this);
+
+        rxPermissions1.requestEach(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new io.reactivex.functions.Consumer<Permission>() {
+            @Override
+            public void accept(Permission permission) throws Exception {
+                if (permission.granted) {
+                    Toast.makeText(getActivity(),"##############permission.granted",1).show();
+                    JSLocateManager.getInstance().setOnIndoorLocateListener(indoorLocateListener);
+                    // SKYLocateManager.getInstance().setOfflineMode();//数据内置APP，使用离线模式
+                    // JSLocateManager.getInstance().setRootFolderName("Joysuch");//设置数据存储位置
+                    // JSLocateManager.getInstance().setLocateTimesSecond(2);//设置每秒定位次数
+                    JSLocateManager.getInstance().init(getActivity());
+
+                }else{
+                    Toast.makeText(getActivity(),"##############permission.fail",1).show();
+                }
+            }
+        });
 
         mMap.setOnFMMapClickListener(this);
 

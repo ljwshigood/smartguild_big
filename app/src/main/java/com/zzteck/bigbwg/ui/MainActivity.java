@@ -28,7 +28,6 @@ import com.zzteck.bigbwg.fragment.FMMapBasic;
 import com.zzteck.bigbwg.fragment.PlaceHelpFragment;
 import com.zzteck.bigbwg.fragment.TrafficFragment;
 import com.zzteck.bigbwg.fragment.FeedBackFragment;
-import com.zzteck.bigbwg.fragment.MapFragment;
 import com.zzteck.bigbwg.fragment.PlaceGuildFragment;
 import com.zzteck.bigbwg.fragment.VideoDetailFragment;
 import com.zzteck.bigbwg.fragment.WelcomeFragment;
@@ -49,23 +48,21 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
-    private TextView mTvCGZN ;
+    private TextView mTvPlaceGuild;
 
-    private TextView mTvCGBZ ;
+    private TextView mTvPlaceHelp;
 
-    private TextView mTvCGJT ;
+    private TextView mTvTraffic;
 
-    private TextView mTvCGJY ;
+    private TextView mTvFeedback;
 
-    private TextView mTvJDGC ;
+    private TextView mTvClassicStorage;
 
-    private TextView mTvWCJN ;
+    private TextView mTvWenChuang;
 
-    private TextView mTvCGDT ;
+    private TextView mTvMap;
 
-    private TextView mTvCGHD ;
-
-   // private FrameLayout mFrameLayout ;
+    private TextView mTvActivitys;
 
     private PlaceGuildFragment mPlaceGuildFragment ;
 
@@ -80,8 +77,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private SetFragment mSetFragment ;
 
     private ClassicStorageFragment mClassStorageFragment;
-
-  //  private MapFragment mMapFragment;
 
     private FMMapBasic mMapFragment;
 
@@ -103,31 +98,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private RXViewPaper mVp ;
 
-    private AFragment mAFragment ;
-
     private void initView(){
 
         mVp = findViewById(R.id.rx_vp) ;
         mTvSet = findViewById(R.id.tv_set) ;
-        mTvCGZN = findViewById(R.id.tv_place_guild) ;
-        mTvCGBZ = findViewById(R.id.tv_place_help) ;
-        mTvCGJT = findViewById(R.id.tv_traffic) ;
-        mTvCGJY = findViewById(R.id.tv_feedback) ;
+        mTvPlaceGuild = findViewById(R.id.tv_place_guild) ;
+        mTvPlaceHelp = findViewById(R.id.tv_place_help) ;
+        mTvTraffic = findViewById(R.id.tv_traffic) ;
+        mTvFeedback = findViewById(R.id.tv_feedback) ;
 
-        mTvJDGC = findViewById(R.id.tv_classic_storage) ;
-        mTvWCJN = findViewById(R.id.tv_wenchuang_remember) ;
-        mTvCGDT = findViewById(R.id.tv_map) ;
-        mTvCGHD = findViewById(R.id.tv_activity) ;
+        mTvClassicStorage = findViewById(R.id.tv_classic_storage) ;
+        mTvWenChuang = findViewById(R.id.tv_wenchuang_remember) ;
+        mTvMap = findViewById(R.id.tv_map) ;
+        mTvActivitys = findViewById(R.id.tv_activity) ;
 
-        mTvCGZN.setOnClickListener(this);
-        mTvCGBZ.setOnClickListener(this);
-        mTvCGJT.setOnClickListener(this);
-        mTvCGJY.setOnClickListener(this);
+        mTvPlaceGuild.setOnClickListener(this);
+        mTvPlaceHelp.setOnClickListener(this);
+        mTvTraffic.setOnClickListener(this);
+        mTvFeedback.setOnClickListener(this);
 
-        mTvJDGC.setOnClickListener(this);
-        mTvWCJN.setOnClickListener(this);
-        mTvCGDT.setOnClickListener(this);
-        mTvCGHD.setOnClickListener(this);
+        mTvClassicStorage.setOnClickListener(this);
+        mTvWenChuang.setOnClickListener(this);
+        mTvMap.setOnClickListener(this);
+        mTvActivitys.setOnClickListener(this);
 
         mTvSet.setOnClickListener(this);
 
@@ -204,8 +197,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             Intent intent = new Intent(this,ActivitysDetailActivity.class) ;
             intent.putExtra("filePath",event.getMsg()) ;
             startActivity(intent);
-          /*  mVideoDetailFragment.updateContent(event.getMsg());
-            mVp.setCurrentItem(13);*/
         }
     }
 

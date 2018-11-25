@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/async-http" />
             <option value="$PROJECT_DIR$/jcvideoplayer-lib" />
+            <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/mediaserver" />
           </set>
         </option>
