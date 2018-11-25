@@ -73,7 +73,7 @@ public class WenChuangAdapter extends BaseAdapter implements OnItemClickListener
         NearWenChuangBean.DataBean bean = mMemoryList.get(position) ;
         Glide.with(mContext).load(Constant.FILE_HOST+bean.getFaceimg()).placeholder(R.mipmap.ic_launcher)
                 .into(viewHolder.mIv);
-        viewHolder.mTv.setText(bean.getProfile());
+        viewHolder.mTv.setText(bean.getName());
 
 
 

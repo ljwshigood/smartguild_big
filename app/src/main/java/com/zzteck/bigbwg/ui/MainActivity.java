@@ -189,7 +189,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Subscriber
     public void onEventMainThread(final MsgEvent event){
-        if(event.getType() == 1){ // 活动详情
+        if(event.getType() == 43){ // 活动详情
             String msg = event.getMsg() ;
             mActivityDetail.requestActivitys(msg);
             mVp.setCurrentItem(12);
@@ -209,7 +209,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Subscriber
     public void onEventMainThread(final NearWenChuangBean.DataBean event){
         mVp.setCurrentItem(11);
-        mWenChuangDetailFragment.updateContent(event.getDesc());
+        mWenChuangDetailFragment.updateContent(event);
     }
 
 

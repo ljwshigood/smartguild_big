@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,11 +16,12 @@ import android.widget.PopupWindow;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
 import com.zzteck.bigbwg.bean.FileBean;
-import com.zzteck.bigbwg.fragment.LeftFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import fm.jiecao.jcvideoplayer_lib.JCMediaManager;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerManager;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 public class ActivitysDetailActivity extends BaseActivity implements View.OnClickListener{
@@ -42,9 +40,9 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         mIvBack.setOnClickListener(this);
     }
 
-    private List<String> mAudioStringList ;
+    private List<String> mMediaStringList;
 
-    private ListView mLvVideoDetail ;
+    private ListView mLvMediaDetail;
 
     public void updateContent(String videoPath){
         mJcVideoPlayerStandard.setUp(videoPath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
@@ -61,7 +59,7 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         Intent intent = getIntent() ;
        /* String filePath = intent.getStringExtra("filePath") ;
         mJcVideoPlayerStandard.setUp(filePath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");*/
-        mAudioStringList = (List<String>) intent.getSerializableExtra("filelist");
+        mMediaStringList = (List<String>) intent.getSerializableExtra("filelist");
     }
 
     @Override
@@ -88,6 +86,13 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
                 }
                 break ;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JCMediaManager.instance().releaseMediaPlayer();
+        JCVideoPlayerManager.setFirstFloor(null);
     }
 
     private PopupWindow popupWindow ;
@@ -136,17 +141,17 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
             }
         });
 
-        mLvVideoDetail = popupWindowView.findViewById(R.id.lv_filePath) ;
+        mLvMediaDetail = popupWindowView.findViewById(R.id.lv_filePath) ;
         List<FileBean> list = new ArrayList<>() ;
-        for(int i = 0 ;i < mAudioStringList.size() ;i++){
+        for(int i = 0; i < mMediaStringList.size() ; i++){
             FileBean bean = new FileBean();
-            bean.setFilePath(mAudioStringList.get(i));
+            bean.setFilePath(mMediaStringList.get(i));
             list.add(bean) ;
         }
 
         FileAdapter adapter = new FileAdapter(mContext,list,0,null) ;
-        mLvVideoDetail.setAdapter(adapter);
-        mLvVideoDetail.setOnItemClickListener(adapter);
+        mLvMediaDetail.setAdapter(adapter);
+        mLvMediaDetail.setOnItemClickListener(adapter);
 
         adapter.setmIMediaOnItemListener(new FileAdapter.IMediaOnItemListener() {
             @Override

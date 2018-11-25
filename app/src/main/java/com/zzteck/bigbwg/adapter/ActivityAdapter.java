@@ -88,7 +88,7 @@ public class ActivityAdapter extends BaseAdapter implements OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ActListBean.DataBean bean = mActivityList.get(position) ;
-        EventBus.getDefault().post(new MsgEvent(bean.getId()+"",1));
+        EventBus.getDefault().post(new MsgEvent(bean.getId()+"",43));
 
 	/*	Intent intent = new Intent(mContext,ActivitysDetailActivity.class) ;
 		intent.putExtra("id", bean.getId()) ;

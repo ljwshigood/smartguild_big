@@ -88,7 +88,7 @@ public class ClassicStorageDetailFragment extends Fragment {
 
 
                     Intent intent = new Intent(getActivity(), ActivitysDetailActivity.class) ;
-                    intent.putExtra("filelist", (Serializable) mAudioStringList) ;
+                    intent.putExtra("filelist", (Serializable) mVideoStringList) ;
                     startActivity(intent);
 
                     /*List<FileBean> list = new ArrayList<>() ;

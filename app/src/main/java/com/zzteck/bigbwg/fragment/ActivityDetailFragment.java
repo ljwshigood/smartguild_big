@@ -9,9 +9,12 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.zzteck.bigbwg.App.App;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.ActivityAdapter;
 import com.zzteck.bigbwg.bean.ActDetailBean;
@@ -21,6 +24,8 @@ import com.zzteck.bigbwg.bean.LoginBean;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
 import com.zzteck.bigbwg.impl.IActManager;
+import com.zzteck.bigbwg.utils.Constant;
+import com.zzteck.bigbwg.view.NoScrollWebView;
 import com.zzteck.bigbwg.webmanager.WebActManager;
 
 /**
@@ -31,14 +36,21 @@ public class ActivityDetailFragment extends Fragment {
 
     private static final String TAG = "ActivityDetailFragment";
 
-    private TextView mTvDetail ;
+    //private TextView mTvDetail ;
+
+    private ImageView mIvPhoto ;
+
+    private TextView mTvTitle ;
 
     private void initData(){
 
     }
 
     private void initView(View view){
-        mTvDetail = view.findViewById(R.id.tv_detail) ;
+       // mTvDetail = view.findViewById(R.id.tv_detail) ;
+        mWebView = view.findViewById(R.id.webview) ;
+        mTvTitle = view.findViewById(R.id.tv_title) ;
+        mIvPhoto = view.findViewById(R.id.iv_photo) ;
     }
 
     private ActDetailBean mCurrentBean ;
@@ -48,12 +60,16 @@ public class ActivityDetailFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mTvDetail.setText(Html.fromHtml(mCurrentBean.getData().getDesc()));
+
+            mWebView.loadDataWithBaseURL(null,mCurrentBean.getData().getDesc(),"text/html","utf-8",null);
+            mTvTitle.setText(mCurrentBean.getData().getName());
+            Glide.with(App.getContext()).load(Constant.FILE_HOST+mCurrentBean.getData().getImgs()).placeholder(R.mipmap.ic_launcher).into(mIvPhoto);
+           // mTvDetail.setText(Html.fromHtml(mCurrentBean.getData().getDesc()));
         }
     } ;
 
     public void requestActivitys(String id){
-        mTvDetail.setText("") ;
+
         WebActManager.getInstance(getActivity()).activityDetail(getActivity(),id,new IActManager() {
             @Override
             public void IRelicLists(NearWenWuBean bean) {
@@ -104,6 +120,8 @@ public class ActivityDetailFragment extends Fragment {
             }
         }) ;
     }
+
+    private NoScrollWebView mWebView ;
 
 
     @Override
