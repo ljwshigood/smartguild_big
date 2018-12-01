@@ -79,7 +79,8 @@
             android:name="com.fengmap.mapapi.appkey"
             android:value="00ef65d17b8069405da5ec4d1b550008"/>-->
 
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
