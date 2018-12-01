@@ -1,5 +1,6 @@
 package com.zzteck.bigbwg.fragment;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,7 +37,11 @@ public class ClassicStorageFragment extends Fragment {
 
     private JingDianAdapter mAdapter ;
 
+    private  TextView mTvTitle ;
+
     private void initView(View view){
+        mTvTitle = view.findViewById(R.id.tv_title) ;
+        mTvTitle.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
         mTvCGZN = view.findViewById(R.id.tv_cgzn) ;
         mGvJinDian = view.findViewById(R.id.gv_jdgc) ;
         mAdapter = new JingDianAdapter(getActivity(),null) ;

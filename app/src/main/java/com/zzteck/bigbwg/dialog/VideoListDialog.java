@@ -53,7 +53,7 @@ public class VideoListDialog extends Dialog {
             }
         }) ;
         mLvFile.setAdapter(adapter);
-        mLvFile.setOnItemClickListener(adapter);
+       // mLvFile.setOnItemClickListener(adapter);
 
         Window window = getWindow();
         assert window != null;

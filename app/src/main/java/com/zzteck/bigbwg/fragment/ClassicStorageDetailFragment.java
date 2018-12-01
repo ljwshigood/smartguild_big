@@ -1,10 +1,7 @@
 package com.zzteck.bigbwg.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -12,33 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.GridView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.joysuch.sdk.IndoorLocateListener;
-import com.joysuch.sdk.locate.JSLocateManager;
-import com.joysuch.sdk.locate.JSPosition;
 import com.zzteck.bigbwg.R;
-import com.zzteck.bigbwg.adapter.JingDianAdapter;
-import com.zzteck.bigbwg.bean.ActDetailBean;
-import com.zzteck.bigbwg.bean.ActListBean;
+import com.zzteck.bigbwg.adapter.FileAdapter;
 import com.zzteck.bigbwg.bean.FileBean;
-import com.zzteck.bigbwg.bean.LoginBean;
 import com.zzteck.bigbwg.bean.MsgEvent;
-import com.zzteck.bigbwg.bean.NearWenWuBean;
-import com.zzteck.bigbwg.dialog.AudioListDialog;
-import com.zzteck.bigbwg.dialog.VideoListDialog;
-import com.zzteck.bigbwg.impl.IActManager;
-import com.zzteck.bigbwg.ui.ActivitysDetailActivity;
+import com.zzteck.bigbwg.ui.VideoDetailActivity;
 import com.zzteck.bigbwg.ui.AudioDetailActivity;
 import com.zzteck.bigbwg.utils.Constant;
-import com.zzteck.bigbwg.webmanager.WebActManager;
-import com.zztek.mediaservier.MusicControl;
+import com.zzteck.bigbwg.view.WJListView;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
@@ -63,7 +49,11 @@ public class ClassicStorageDetailFragment extends Fragment {
 
     private ImageView mIvCover ;
 
+    private WJListView mLvAudio ,mLvVideo ;
+
     private void initView(View view){
+        mLvAudio= view.findViewById(R.id.lv_audio) ;
+        mLvVideo = view.findViewById(R.id.lv_video) ;
         mLLAudio = view.findViewById(R.id.ll_audio) ;
         mLLVideo = view.findViewById(R.id.ll_video) ;
         mWebView = view.findViewById(R.id.webview) ;
@@ -73,9 +63,9 @@ public class ClassicStorageDetailFragment extends Fragment {
             public void onClick(View view) {
                 if(mAudioStringList != null && !mAudioStringList.isEmpty()){
 
-                    Intent intent = new Intent(getActivity(), AudioDetailActivity.class) ;
+                  /*  Intent intent = new Intent(getActivity(), AudioDetailActivity.class) ;
                     intent.putExtra("filelist", (Serializable) mAudioStringList) ;
-                    startActivity(intent);
+                    startActivity(intent);*/
                 }
             }
         });
@@ -87,9 +77,9 @@ public class ClassicStorageDetailFragment extends Fragment {
                 if(mVideoStringList != null && !mVideoStringList.isEmpty()){
 
 
-                    Intent intent = new Intent(getActivity(), ActivitysDetailActivity.class) ;
+                   /* Intent intent = new Intent(getActivity(), VideoDetailActivity.class) ;
                     intent.putExtra("filelist", (Serializable) mVideoStringList) ;
-                    startActivity(intent);
+                    startActivity(intent);*/
 
                     /*List<FileBean> list = new ArrayList<>() ;
                     for(int i = 0 ;i < mVideoStringList.size() ;i++){
@@ -128,6 +118,61 @@ public class ClassicStorageDetailFragment extends Fragment {
             mLLVideo.setVisibility(View.VISIBLE) ;
         }
 
+
+        if(mAudioStringList != null && !mAudioStringList.isEmpty()){
+            final List<FileBean> list = new ArrayList<>() ;
+            for(int i = 0; i < mAudioStringList.size() ; i++){
+                FileBean bean = new FileBean();
+                bean.setFilePath(mAudioStringList.get(i));
+                list.add(bean) ;
+            }
+            final FileAdapter adapter = new FileAdapter(getActivity(),list,0,null) ;
+            mLvAudio.setAdapter(adapter);
+            mLvAudio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    for(int i = 0 ;i < adapter.getmFileList().size() ;i++){
+                        if(i == position){
+                            adapter.getmFileList().get(i).setSelect(true);
+                        }else{
+                            adapter.getmFileList().get(i).setSelect(false);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+
+                    List<String> list = new ArrayList<>() ;
+                    for(int i = 0 ;i < adapter.getmFileList().size() ;i++){
+                        list.add(adapter.getmFileList().get(i).getFilePath()) ;
+                    }
+                    Intent intent = new Intent(getActivity(), AudioDetailActivity.class) ;
+                    intent.putExtra("filelist", (Serializable) list) ;
+                    intent.putExtra("position",position) ;
+                    getActivity().startActivity(intent);
+                }
+            });
+        }
+
+        if(mVideoStringList != null && !mVideoStringList.isEmpty()){
+
+            List<FileBean> list = new ArrayList<>() ;
+            for(int i = 0; i < mVideoStringList.size() ; i++){
+                FileBean bean = new FileBean();
+                bean.setFilePath(mVideoStringList.get(i));
+                list.add(bean) ;
+            }
+
+            final FileAdapter adapter = new FileAdapter(getActivity(),list,0,null) ;
+            mLvVideo.setAdapter(adapter);
+            mLvVideo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    EventBus.getDefault().post(new MsgEvent(adapter.getmFileList().get(position).getFilePath(),5));
+                }
+            });
+        }
+
+
         Glide.with(this).load(Constant.FILE_HOST+path).placeholder(R.mipmap.ic_launcher)
                 .into(mIvCover);
         mWebView.loadDataWithBaseURL(null,content,"text/html","utf-8",null);
@@ -139,6 +184,7 @@ public class ClassicStorageDetailFragment extends Fragment {
         View view  = LayoutInflater.from(getContext()).inflate(R.layout.fragment_jd_detail,null) ;
         initView(view) ;
         EventBus.getDefault().register(this);
+
         return view;
     }
 

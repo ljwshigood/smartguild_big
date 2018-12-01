@@ -1,5 +1,6 @@
 package com.zzteck.bigbwg.fragment;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,6 +43,8 @@ public class TrafficFragment extends Fragment implements IActManager{
     private TextView mTvCGZN ,mTvAddress ;
 
     private void initView(View view){
+        mTvTitle = view.findViewById(R.id.tv_title) ;
+        mTvTitle.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
         mTvCGZN = view.findViewById(R.id.tv_cgjt) ;
         mTvAddress = view.findViewById(R.id.tv_address) ;
     }
@@ -54,6 +57,8 @@ public class TrafficFragment extends Fragment implements IActManager{
     private void initMap(){
 
     }
+
+    private TextView mTvTitle ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -171,6 +176,7 @@ public class TrafficFragment extends Fragment implements IActManager{
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             mTvAddress.setText("地址："+mBwgBean.getData().getAddr());
+            mTvAddress.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
             mTvCGZN.setText("");
             mTvCGZN.setText(Html.fromHtml(mBwgBean.getData().getTraffic()+""));
             addMarkers();

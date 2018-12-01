@@ -70,7 +70,9 @@ public class BgMusicControlService extends Service implements OnBufferingUpdateL
 	
 	private MusicControl mMusicControl  = new MusicControl() ;
 	
-	AssetFileDescriptor fileDescriptor;  
+	AssetFileDescriptor fileDescriptor;
+
+	private AudioManager am ;
 
 	@Override
 	public void onCreate() {
@@ -83,6 +85,11 @@ public class BgMusicControlService extends Service implements OnBufferingUpdateL
 		registerReceiver(serviceReceiver, filter);
 		
 		intentUI = new Intent(Constant.MusicPlayControl.UPDATEUI) ;
+
+		am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+		int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+
+		am.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
 		
 		super.onCreate();
 	}

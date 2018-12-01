@@ -15,6 +15,7 @@
             android:id="@+id/iv_logo"
             android:layout_width="match_parent"
             android:layout_height="300dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/ic_launcher" />
 
         <TextView
@@ -22,7 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            tools:text="afdasfafdadfafad" />
+            android:lineSpacingExtra="15dp"
+            tools:text="afdasfafdadfafffffad" />
 
     </LinearLayout>
 

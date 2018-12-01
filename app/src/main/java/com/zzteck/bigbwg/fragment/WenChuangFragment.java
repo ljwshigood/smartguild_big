@@ -1,5 +1,6 @@
 package com.zzteck.bigbwg.fragment;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.WenChuangAdapter;
@@ -33,7 +35,11 @@ public class WenChuangFragment extends Fragment {
 
     private WenChuangAdapter mAdapter ;
 
+    private TextView mTvTitle ;
+
     private void initView(View view){
+        mTvTitle = view.findViewById(R.id.tv_cgzn) ;
+        mTvTitle.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
         mGvWenChuang = view.findViewById(R.id.gv_memory) ;
     }
 

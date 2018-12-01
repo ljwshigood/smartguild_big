@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fengmap.android.FMMapSDK;
@@ -19,7 +20,6 @@ import com.zzteck.bigbwg.bean.LoginBean;
 import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
-import com.zzteck.bigbwg.fragment.AFragment;
 import com.zzteck.bigbwg.fragment.ActivityDetailFragment;
 import com.zzteck.bigbwg.fragment.ActivityFragment;
 import com.zzteck.bigbwg.fragment.ClassicStorageDetailFragment;
@@ -99,7 +99,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private RXViewPaper mVp ;
 
     private void initView(){
-
+        mLLBack = findViewById(R.id.ll_back) ;
+        mLLBack.setOnClickListener(this);
         mVp = findViewById(R.id.rx_vp) ;
         mTvSet = findViewById(R.id.tv_set) ;
         mTvPlaceGuild = findViewById(R.id.tv_place_guild) ;
@@ -194,7 +195,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             mActivityDetail.requestActivitys(msg);
             mVp.setCurrentItem(12);
         }else if(event.getType() == 5){
-            Intent intent = new Intent(this,ActivitysDetailActivity.class) ;
+            Intent intent = new Intent(this,VideoDetailActivity.class) ;
             intent.putExtra("filePath",event.getMsg()) ;
             startActivity(intent);
         }
@@ -212,6 +213,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         mWenChuangDetailFragment.updateContent(event);
     }
 
+
+    private LinearLayout mLLBack ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -304,8 +307,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.ll_back :
+                mVp.setCurrentItem(0);
+                break ;
             case R.id.tv_set:
-                mVp.setCurrentItem(9) ;
+              //  mVp.setCurrentItem(9) ;
                 break ;
             case R.id.tv_place_guild:
                 mVp.setCurrentItem(1) ;

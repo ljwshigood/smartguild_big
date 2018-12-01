@@ -1,5 +1,6 @@
 package com.zzteck.bigbwg.fragment;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,9 +30,11 @@ public class PlaceHelpFragment extends Fragment implements IActManager{
 
     private static final String TAG = "PlaceGuildFragment";
 
-    private TextView mTvName,mTvAddress,mTvCall;
+    private TextView mTvName,mTvAddress,mTvCall,mTvTitle;
 
     private void initView(View view){
+        mTvTitle = view.findViewById(R.id.tv_title) ;
+        mTvTitle.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
         mTvName = view.findViewById(R.id.tv_name) ;
         mTvAddress = view.findViewById(R.id.tv_address) ;
         mTvCall = view.findViewById(R.id.tv_call) ;

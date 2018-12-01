@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:paddingTop="10dp">
@@ -9,7 +10,7 @@
     <ImageView
         android:id="@+id/iv_memory"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="150dp"
         android:scaleType="fitXY"
         android:background="@android:color/darker_gray"/>
 
@@ -19,7 +20,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_marginTop="5dp"
-        android:text="汉代"
+        tools:text="汉代"
         android:textSize="16sp"
         android:textColor="@android:color/black" />
 

@@ -1,5 +1,6 @@
 package com.zzteck.bigbwg.fragment;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,6 +46,7 @@ public class ActivityFragment extends Fragment {
     private void initView(View view){
         mTvCGZN = view.findViewById(R.id.tv_cgzn) ;
         mLvActivity = view.findViewById(R.id.lv_memory) ;
+        mTvCGZN.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
     }
 
     private ActListBean mCurrentBean ;

@@ -8,16 +8,23 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
+    <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+        android:id="@+id/jc_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
     <RelativeLayout
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:orientation="vertical">
 
-        <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+       <!-- <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
             android:id="@+id/jc_video"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" />-->
 
 
         <ImageView
@@ -29,6 +36,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="@android:color/white"
+            android:visibility="gone"
             android:src="@mipmap/ic_delete"/>
 
     </RelativeLayout>
@@ -47,6 +55,7 @@
             android:id="@+id/iv_left"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:visibility="gone"
             android:src="@mipmap/ic_left"/>
     </LinearLayout>
 

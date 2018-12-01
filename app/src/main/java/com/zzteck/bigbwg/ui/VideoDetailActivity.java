@@ -16,6 +16,7 @@ import android.widget.PopupWindow;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
 import com.zzteck.bigbwg.bean.FileBean;
+import com.zzteck.bigbwg.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import fm.jiecao.jcvideoplayer_lib.JCMediaManager;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerManager;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
-public class ActivitysDetailActivity extends BaseActivity implements View.OnClickListener{
+public class VideoDetailActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String TAG = "VideoDetailFragment";
 
@@ -44,6 +45,8 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
 
     private ListView mLvMediaDetail;
 
+    private String mFilePath ;
+
     public void updateContent(String videoPath){
         mJcVideoPlayerStandard.setUp(videoPath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
     }
@@ -59,17 +62,22 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
         Intent intent = getIntent() ;
        /* String filePath = intent.getStringExtra("filePath") ;
         mJcVideoPlayerStandard.setUp(filePath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");*/
-        mMediaStringList = (List<String>) intent.getSerializableExtra("filelist");
+        mMediaStringList = (List<String>) intent.getSerializableExtra("fileList");
+        mFilePath = intent.getStringExtra("filePath") ;
+
+        mJcVideoPlayerStandard.setUp(Constant.FILE_HOST+mFilePath, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_video_detail);
-        mContext = ActivitysDetailActivity.this ;
+        mContext = VideoDetailActivity.this ;
         initView() ;
         initData() ;
-        initPopupWindow();
+
+        mJcVideoPlayerStandard.startPlay() ;
+   //     initPopupWindow();
     }
 
     @Override
@@ -151,7 +159,7 @@ public class ActivitysDetailActivity extends BaseActivity implements View.OnClic
 
         FileAdapter adapter = new FileAdapter(mContext,list,0,null) ;
         mLvMediaDetail.setAdapter(adapter);
-        mLvMediaDetail.setOnItemClickListener(adapter);
+      //  mLvMediaDetail.setOnItemClickListener(adapter);
 
         adapter.setmIMediaOnItemListener(new FileAdapter.IMediaOnItemListener() {
             @Override

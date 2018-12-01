@@ -18,6 +18,7 @@ import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
 import com.zzteck.bigbwg.bean.FileBean;
 import com.zzteck.bigbwg.fragment.LeftFragment;
+import com.zzteck.bigbwg.utils.Constant;
 import com.zztek.mediaservier.BgMusicControlService;
 import com.zztek.mediaservier.MusicBean;
 import com.zztek.mediaservier.MusicControl;
@@ -51,16 +52,20 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
 
     private ImageView mIvNext ;
 
+    private TextView  mTvName ;
+
+    private int mPosition ;
+
     private void initData(){
         Intent intent = getIntent() ;
-
+        mPosition = intent.getIntExtra("position",0) ;
         mAudioStringList = (List<String>) intent.getSerializableExtra("filelist");
         List<MusicBean> list = new ArrayList<>() ;
 
         for(int i = 0 ;i < mAudioStringList.size() ;i++){
             String filePath = mAudioStringList.get(i) ;
             MusicBean bean = new MusicBean() ;
-            bean.setFilePath(filePath) ;
+            bean.setFilePath(Constant.FILE_HOST+filePath) ;
             list.add(bean) ;
         }
 
@@ -77,7 +82,7 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
 
         FileAdapter adapter = new FileAdapter(mContext,list1,0,null) ;
         mLvAudioList.setAdapter(adapter);
-        mLvAudioList.setOnItemClickListener(adapter);
+       // mLvAudioList.setOnItemClickListener(adapter);
         adapter.setmIMediaOnItemListener(new FileAdapter.IMediaOnItemListener() {
             @Override
             public void medidaOnItem(String filePath) {
@@ -98,6 +103,21 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
         initData() ;
 
         EventBus.getDefault().register(this);
+
+
+        if (isFirstPlayer) {
+            MusicManager.getInstance(mContext).playMusic(BgMusicControlService.mMusicItemList.get(mPosition).getFilePath(),0) ;
+            isFirstPlayer = false ;
+        }else{
+            if (mCbStatus.isChecked()) {
+                MusicManager.getInstance(mContext).resumeMusic();
+            } else {
+                MusicManager.getInstance(mContext).pauseMusic();
+            }
+        }
+
+        mCbStatus.setChecked(true);
+
     }
 
     public String formatSecondTime(int millisecond) {
@@ -134,7 +154,7 @@ public class AudioDetailActivity extends BaseActivity implements View.OnClickLis
     private ImageView mIvDelete ;
 
     private void initView(){
-
+        mTvName = findViewById(R.id.tv_name) ;
         mIvDelete = findViewById(R.id.iv_delete) ;
         mIvDelete.setOnClickListener(this);
         mTvCurrentTime = findViewById(R.id.tv_start_time) ;

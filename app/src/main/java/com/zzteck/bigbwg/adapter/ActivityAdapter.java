@@ -1,20 +1,17 @@
 package com.zzteck.bigbwg.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.bean.ActListBean;
 import com.zzteck.bigbwg.bean.MsgEvent;
-import com.zzteck.bigbwg.ui.ActivitysDetailActivity;
 
 import org.simple.eventbus.EventBus;
 
@@ -90,7 +87,7 @@ public class ActivityAdapter extends BaseAdapter implements OnItemClickListener{
         ActListBean.DataBean bean = mActivityList.get(position) ;
         EventBus.getDefault().post(new MsgEvent(bean.getId()+"",43));
 
-	/*	Intent intent = new Intent(mContext,ActivitysDetailActivity.class) ;
+	/*	Intent intent = new Intent(mContext,VideoDetailActivity.class) ;
 		intent.putExtra("id", bean.getId()) ;
 		
 		mContext.startActivity(intent);*/

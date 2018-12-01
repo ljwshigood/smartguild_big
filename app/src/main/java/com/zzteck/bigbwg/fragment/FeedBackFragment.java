@@ -1,5 +1,6 @@
 package com.zzteck.bigbwg.fragment;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,7 +25,11 @@ public class FeedBackFragment extends Fragment implements View.OnClickListener{
 
     private LinearLayout mLLCommit ;
 
+    private  TextView mTvTitle ;
+
     private void initView(View view){
+        mTvTitle = view.findViewById(R.id.tv_title) ;
+        mTvTitle.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
         mTvChenhu = view.findViewById(R.id.et_chenghu) ;
         mTvDianhua = view.findViewById(R.id.et_dianhua) ;
         mTvMail = view.findViewById(R.id.et_mail) ;

@@ -88,11 +88,11 @@
         </activity>
 
         <activity android:name=".ui.AudioDetailActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@style/loading_dialog"
             ></activity>
 
-        <activity android:name=".ui.ActivitysDetailActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        <activity android:name=".ui.VideoDetailActivity"
+            android:theme="@style/loading_dialog"
             ></activity>
         <service android:name="com.zztek.mediaservier.BgMusicControlService"></service>
 

@@ -233,6 +233,7 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
 
 
         mMap.setFMViewMode(FMViewMode.FMVIEW_MODE_2D); //设置地图2D显示模式
+        mMap.setZoomLevel(21, false);
 
         mImageLayer = mMap.getFMLayerProxy().createFMImageLayer(mMap.getFocusGroupId());
         mMap.addLayer(mImageLayer);

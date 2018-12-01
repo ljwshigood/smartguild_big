@@ -149,6 +149,35 @@ public abstract class JCVideoPlayer extends FrameLayout implements View.OnClickL
         setUiWitStateAndScreen(CURRENT_STATE_NORMAL);
     }
 
+    public void startPlay(){
+
+        Log.i(TAG, "onClick start [" + this.hashCode() + "] ");
+        if (TextUtils.isEmpty(url)) {
+            Toast.makeText(getContext(), getResources().getString(R.string.no_url), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (currentState == CURRENT_STATE_NORMAL || currentState == CURRENT_STATE_ERROR) {
+            if (!url.startsWith("file") && !JCUtils.isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
+                showWifiDialog();
+                return;
+            }
+            prepareMediaPlayer();
+            onEvent(currentState != CURRENT_STATE_ERROR ? JCUserAction.ON_CLICK_START_ICON : JCUserAction.ON_CLICK_START_ERROR);
+        } else if (currentState == CURRENT_STATE_PLAYING) {
+            onEvent(JCUserAction.ON_CLICK_PAUSE);
+            Log.d(TAG, "pauseVideo [" + this.hashCode() + "] ");
+            JCMediaManager.instance().mediaPlayer.pause();
+            setUiWitStateAndScreen(CURRENT_STATE_PAUSE);
+        } else if (currentState == CURRENT_STATE_PAUSE) {
+            onEvent(JCUserAction.ON_CLICK_RESUME);
+            JCMediaManager.instance().mediaPlayer.start();
+            setUiWitStateAndScreen(CURRENT_STATE_PLAYING);
+        } else if (currentState == CURRENT_STATE_AUTO_COMPLETE) {
+            onEvent(JCUserAction.ON_CLICK_START_AUTO_COMPLETE);
+            prepareMediaPlayer();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         int i = v.getId();

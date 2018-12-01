@@ -18,19 +18,30 @@ import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.bean.FileBean;
 import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zzteck.bigbwg.bean.NearWenWuBean;
+import com.zzteck.bigbwg.ui.AudioDetailActivity;
 import com.zzteck.bigbwg.utils.Constant;
 import com.zztek.mediaservier.MusicControl;
 
 import org.simple.eventbus.EventBus;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class FileAdapter extends BaseAdapter implements OnItemClickListener{
+public class FileAdapter extends BaseAdapter/* implements OnItemClickListener*/{
 
 	private Context mContext ;
 
-	private List<FileBean> mFileList ;
+    public List<FileBean> getmFileList() {
+        return mFileList;
+    }
+
+    public void setmFileList(List<FileBean> mFileList) {
+        this.mFileList = mFileList;
+    }
+
+    private List<FileBean> mFileList ;
 
 	private LayoutInflater mLayoutInflater ;
 
@@ -134,21 +145,30 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
         public void medidaOnItem(String filePath) ;
     }
 
-	@Override
+	/*@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FileBean filePath = mFileList.get(position) ;
        if(mType == 0) {
             for(int i = 0 ;i < mFileList.size() ;i++){
                 if(i == position){
                     mFileList.get(i).setSelect(true);
-                    if(mIMediaOnItemListener != null){
+                    *//*if(mIMediaOnItemListener != null){
                         mIMediaOnItemListener.medidaOnItem(Constant.FILE_HOST+filePath.getFilePath());
-                    }
+                    }*//*
                 }else{
                     mFileList.get(i).setSelect(false);
                 }
             }
-            notifyDataSetChanged();
+           notifyDataSetChanged();
+
+           List<String> list = new ArrayList<>() ;
+           for(int i = 0 ;i < mFileList.size() ;i++){
+               list.add(mFileList.get(i).getFilePath()) ;
+           }
+           Intent intent = new Intent(mContext, AudioDetailActivity.class) ;
+           intent.putExtra("filelist", (Serializable) list) ;
+           mContext.startActivity(intent);
+
        }else{
            if(mIDialogListener != null){
                mIDialogListener.dismiss();
@@ -157,6 +177,6 @@ public class FileAdapter extends BaseAdapter implements OnItemClickListener{
 
        }
 
-	}
+	}*/
 		
 }

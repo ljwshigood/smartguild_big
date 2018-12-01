@@ -51,7 +51,7 @@ public class AudioListDialog extends Dialog {
         mLvFile = view.findViewById(R.id.lv_audio_list) ;
         FileAdapter adapter = new FileAdapter(mContext,mAudioPathList,0,null) ;
         mLvFile.setAdapter(adapter);
-        mLvFile.setOnItemClickListener(adapter);
+      //  mLvFile.setOnItemClickListener(adapter);
 
         Window window = getWindow();
         assert window != null;
