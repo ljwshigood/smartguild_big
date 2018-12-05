@@ -58,13 +58,12 @@
                             android:id="@+id/tv_place_guild"
                             android:layout_width="150dp"
                             android:layout_height="80dp"
-                            android:background="@drawable/bg_shape_rec"
+                            android:background="@mipmap/bg_place_guild"
                             android:gravity="center"
                             android:paddingBottom="5dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:paddingTop="5dp"
-                            android:text="场馆指南"
                             android:textColor="@android:color/white"
                             android:textSize="25sp" />
                     </LinearLayout>
@@ -80,13 +79,12 @@
                             android:id="@+id/tv_place_help"
                             android:layout_width="150dp"
                             android:layout_height="80dp"
-                            android:background="@drawable/bg_shape_rec"
+                            android:background="@mipmap/bg_place_help"
                             android:gravity="center"
                             android:paddingBottom="5dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:paddingTop="5dp"
-                            android:text="场馆帮助"
                             android:textColor="@android:color/white"
                             android:textSize="25sp" />
                     </LinearLayout>
@@ -102,13 +100,12 @@
                             android:id="@+id/tv_traffic"
                             android:layout_width="150dp"
                             android:layout_height="80dp"
-                            android:background="@drawable/bg_shape_rec"
+                            android:background="@mipmap/bg_traffic"
                             android:gravity="center"
                             android:paddingBottom="5dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:paddingTop="5dp"
-                            android:text="场馆交通"
                             android:textColor="@android:color/white"
                             android:textSize="25sp" />
                     </LinearLayout>
@@ -124,13 +121,12 @@
                             android:id="@+id/tv_feedback"
                             android:layout_width="150dp"
                             android:layout_height="80dp"
-                            android:background="@drawable/bg_shape_rec"
+                            android:background="@mipmap/bg_feedback"
                             android:gravity="center"
                             android:paddingBottom="5dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:paddingTop="5dp"
-                            android:text="场馆建议"
                             android:textColor="@android:color/white"
                             android:textSize="25sp" />
                     </LinearLayout>
@@ -243,13 +239,12 @@
                         android:id="@+id/tv_classic_storage"
                         android:layout_width="150dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/bg_shape_rec"
+                        android:background="@mipmap/bg_classic_storage"
                         android:gravity="center"
                         android:paddingBottom="5dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="5dp"
-                        android:text="经典馆藏"
                         android:textColor="@android:color/white"
                         android:textSize="25sp" />
                 </LinearLayout>
@@ -265,13 +260,12 @@
                         android:id="@+id/tv_wenchuang_remember"
                         android:layout_width="150dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/bg_shape_rec"
+                        android:background="@mipmap/bg_wenchuang"
                         android:gravity="center"
                         android:paddingBottom="5dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="5dp"
-                        android:text="文创纪念"
                         android:textColor="@android:color/white"
                         android:textSize="25sp" />
                 </LinearLayout>
@@ -287,13 +281,12 @@
                         android:id="@+id/tv_map"
                         android:layout_width="150dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/bg_shape_rec"
+                        android:background="@mipmap/bg_place_map"
                         android:gravity="center"
                         android:paddingBottom="5dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="5dp"
-                        android:text="场馆地图"
                         android:textColor="@android:color/white"
                         android:textSize="25sp" />
                 </LinearLayout>
@@ -309,13 +302,12 @@
                         android:id="@+id/tv_activity"
                         android:layout_width="150dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/bg_shape_rec"
+                        android:background="@mipmap/bg_place_activity"
                         android:gravity="center"
                         android:paddingBottom="5dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="5dp"
-                        android:text="场馆活动"
                         android:textColor="@android:color/white"
                         android:textSize="25sp" />
                 </LinearLayout>
@@ -332,7 +324,9 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="23dp"
         android:background="@mipmap/bg_left" />s
 </RelativeLayout>
