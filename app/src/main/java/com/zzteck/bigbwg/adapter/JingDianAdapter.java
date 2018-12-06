@@ -72,7 +72,7 @@ public class JingDianAdapter extends BaseAdapter implements OnItemClickListener{
         NearWenWuBean.DataBean bean = mJinDianList.get(position) ;
         Glide.with(mContext).load(Constant.FILE_HOST+bean.getFaceimg()).placeholder(R.mipmap.ic_launcher)
                 .into(viewHolder.mIv);
-        viewHolder.mTv.setText(bean.getProfile());
+        viewHolder.mTv.setText(bean.getName());
         return convertView;
 	}
 
