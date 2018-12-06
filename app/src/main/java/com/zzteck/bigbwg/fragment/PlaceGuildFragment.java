@@ -170,7 +170,7 @@ public class PlaceGuildFragment extends Fragment implements  IActManager{
             super.handleMessage(msg);
             mTvPlaceGuildContent.setText("");
             if(msg.what == 0){
-                if(mBwgBean != null){
+                if(mBwgBean != null && mBwgBean.getData() != null){
                     mTvPlaceGuildContent.setVisibility(View.VISIBLE) ;
                     mTvPlaceGuildContent.setText(Html.fromHtml(mBwgBean.getData().getAttention()+""));
                 }

@@ -175,11 +175,14 @@ public class TrafficFragment extends Fragment implements IActManager{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mTvAddress.setText("地址："+mBwgBean.getData().getAddr());
-            mTvAddress.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
-            mTvCGZN.setText("");
-            mTvCGZN.setText(Html.fromHtml(mBwgBean.getData().getTraffic()+""));
-            addMarkers();
+            if(mBwgBean != null && mBwgBean.getData() != null){
+                mTvAddress.setText("地址："+mBwgBean.getData().getAddr());
+                mTvAddress.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
+                mTvCGZN.setText("");
+                mTvCGZN.setText(Html.fromHtml(mBwgBean.getData().getTraffic()+""));
+                addMarkers();
+            }
+
         }
     } ;
 }

@@ -45,9 +45,11 @@ public class PlaceHelpFragment extends Fragment implements IActManager{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mTvName.setText(mBwgBean.getData().getName());
-            mTvAddress.setText("地址："+mBwgBean.getData().getAddr());
-            mTvCall.setText("场馆服务帮助电话："+mBwgBean.getData().getTel());
+            if(mBwgBean != null && mBwgBean.getData() != null){
+                mTvName.setText(mBwgBean.getData().getName());
+                mTvAddress.setText("地址："+mBwgBean.getData().getAddr());
+                mTvCall.setText("场馆服务帮助电话："+mBwgBean.getData().getTel());
+            }
         }
     } ;
 
