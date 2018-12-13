@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zzteck.bigbwg.R;
 import com.zzteck.bigbwg.adapter.FileAdapter;
+import com.zzteck.bigbwg.adapter.VpAdapter;
 import com.zzteck.bigbwg.bean.FileBean;
 import com.zzteck.bigbwg.bean.MsgEvent;
 import com.zzteck.bigbwg.ui.VideoDetailActivity;
@@ -26,6 +28,8 @@ import com.zzteck.bigbwg.ui.AudioDetailActivity;
 import com.zzteck.bigbwg.utils.Constant;
 import com.zzteck.bigbwg.view.WJListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
@@ -47,25 +51,26 @@ public class ClassicStorageDetailFragment extends Fragment {
 
     private LinearLayout mLLVideo ;
 
-    private ImageView mIvCover ;
+    //private ImageView mIvCover ;
 
     private WJListView mLvAudio ,mLvVideo ;
 
+    private ViewPager viewPager;
+
     private void initView(View view){
+
+        viewPager =  view.findViewById(R.id.viewPager) ;
         mLvAudio= view.findViewById(R.id.lv_audio) ;
         mLvVideo = view.findViewById(R.id.lv_video) ;
         mLLAudio = view.findViewById(R.id.ll_audio) ;
         mLLVideo = view.findViewById(R.id.ll_video) ;
         mWebView = view.findViewById(R.id.webview) ;
-        mIvCover = view.findViewById(R.id.ic_cover) ;
+      //  mIvCover = view.findViewById(R.id.ic_cover) ;
         mLLAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mAudioStringList != null && !mAudioStringList.isEmpty()){
 
-                  /*  Intent intent = new Intent(getActivity(), AudioDetailActivity.class) ;
-                    intent.putExtra("filelist", (Serializable) mAudioStringList) ;
-                    startActivity(intent);*/
                 }
             }
         });
@@ -76,21 +81,6 @@ public class ClassicStorageDetailFragment extends Fragment {
 
                 if(mVideoStringList != null && !mVideoStringList.isEmpty()){
 
-
-                   /* Intent intent = new Intent(getActivity(), VideoDetailActivity.class) ;
-                    intent.putExtra("filelist", (Serializable) mVideoStringList) ;
-                    startActivity(intent);*/
-
-                    /*List<FileBean> list = new ArrayList<>() ;
-                    for(int i = 0 ;i < mVideoStringList.size() ;i++){
-                        FileBean bean = new FileBean();
-                        bean.setFilePath(mVideoStringList.get(i));
-                        list.add(bean) ;
-                    }
-
-                    VideoListDialog dialog = new VideoListDialog(getActivity(),list) ;
-                    dialog.setCanceledOnTouchOutside(true);
-                    dialog.show() ;*/
                 }
 
             }
@@ -101,6 +91,8 @@ public class ClassicStorageDetailFragment extends Fragment {
     private List<String> mAudioStringList = new ArrayList<>() ;
 
     private List<String> mVideoStringList = new ArrayList<>() ;
+
+    private List<String> imgs = new ArrayList<>() ;
 
     public void updateContent(String path,String audioString,String videoString,String content){
 
@@ -173,9 +165,43 @@ public class ClassicStorageDetailFragment extends Fragment {
         }
 
 
-        Glide.with(this).load(Constant.FILE_HOST+path).placeholder(R.mipmap.ic_launcher)
-                .into(mIvCover);
+       /* Glide.with(this).load(Constant.FILE_HOST+path).placeholder(R.mipmap.ic_launcher)
+                .into(mIvCover);*/
         mWebView.loadDataWithBaseURL(null,content,"text/html","utf-8",null);
+
+        try {
+            JSONArray jsonArray = new JSONArray(path) ;
+            for(int i = 0  ;i < jsonArray.length() ;i++){
+                imgs.add(jsonArray.get(i).toString()) ;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        VpAdapter adapter = new VpAdapter(getActivity(),imgs);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(0);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+
     }
 
     @Override
@@ -200,15 +226,7 @@ public class ClassicStorageDetailFragment extends Fragment {
     }
     @Subscriber
     public void onEventMainThread(final MsgEvent event){
-        /*if(event.getType() == 15){ // 活动详情
-            String msg = event.getMsg() ;
 
-            Intent intent = new Intent() ;
-            MusicControl musicControl = new MusicControl() ;
-            musicControl.setmAction(1);
-            musicControl.setFilePath(Constant.FILE_HOST+msg);
-            getActivity().sendBroadcast(intent) ;
-        }*/
     }
 
 }

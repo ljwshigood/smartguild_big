@@ -204,7 +204,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Subscriber
     public void onEventMainThread(final NearWenWuBean.DataBean event){
         mVp.setCurrentItem(10);
-        mClassicDetailFragment.updateContent(event.getFaceimg(),event.getVoice(),event.getVideo(),event.getDesc());
+        mClassicDetailFragment.updateContent(event.getImgs(),event.getVoice(),event.getVideo(),event.getDesc());
     }
 
     @Subscriber

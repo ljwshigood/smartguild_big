@@ -1,5 +1,6 @@
 package com.zzteck.bigbwg.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.zzteck.bigbwg.R;
+import com.zzteck.bigbwg.adapter.VpAdapter;
 import com.zzteck.bigbwg.bean.NearWenChuangBean;
 import com.zzteck.bigbwg.utils.Constant;
 
@@ -47,30 +49,8 @@ public class WenChuangDetailFragment extends Fragment implements ViewPager.OnPag
     private List<String> imgs;
     private List<ImageView> imageViewList;
 
-    private int currentIndex = 300; //初始值可以设置大一点，防止左划到尽头
 
-    private long lastTime ;
-
-    private boolean isCyclical = true;
-
-    private Handler handler = new Handler();
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-
-                if (isCyclical) {
-                    if (System.currentTimeMillis() - lastTime > 2000) {
-                        currentIndex++;
-                        viewPager.setCurrentItem(currentIndex);
-                        lastTime = System.currentTimeMillis();
-                    }
-                    //递归循环，图片切换速度3秒一张
-                    handler.postDelayed(r, 3000);
-                }
-            }
-    };
-
-    class MyAdapter extends PagerAdapter {
+    /*class MyAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -84,10 +64,10 @@ public class WenChuangDetailFragment extends Fragment implements ViewPager.OnPag
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            //在0~imageViewList.size()之间循环
-            int index = position % imageViewList.size();
+           *//* //在0~imageViewList.size()之间循环
+            //int index = position % imageViewList.size();
 
-            imageViewList.get(index).setOnClickListener(new View.OnClickListener() {
+            imageViewList.get(position).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //处理图片点击事件....
@@ -96,30 +76,35 @@ public class WenChuangDetailFragment extends Fragment implements ViewPager.OnPag
             });
 
             if (imageViewList.size() > 0) {
-                View view = imageViewList.get(index);
-                if (container.equals(view.getParent())) {
+                View view = imageViewList.get(position);
+               *//**//* if (container.equals(view.getParent())) {
                     container.removeView(view);
-                }
+                }*//**//*
+                container.removeAllViews();
                 container.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 return view;
             }
 
 
-            return null;
+            return null;*//*
+
+
+            ((ViewPager)container).addView(imageViewList.get(position));
+            return  imageViewList.get(position);
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            int index = position % imageViewList.size();
-            container.removeView(imageViewList.get(index));
+           // int index = position % imageViewList.size();
+            //container.removeView(imageViewList.get(position));
+            ((ViewPager)container).removeView(imageViewList.get(position));
         }
 
-    }
+    }*/
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isCyclical = false; //Activity退出后，图片循环线程停止
     }
 
     private TextView mTvPrice,mTvTitle ;
@@ -146,7 +131,7 @@ public class WenChuangDetailFragment extends Fragment implements ViewPager.OnPag
     public void updateContent(NearWenChuangBean.DataBean bean){
       //  initData(bean);
         mTvTitle.setText(bean.getName());
-        mTvPrice.setText("售價 ："+numberFormatMoney(bean.getPrice()/ 100+""));
+        mTvPrice.setText("售价 ："+numberFormatMoney(bean.getPrice()/ 100+""));
         mWebViewDetail.loadDataWithBaseURL(null,bean.getDesc(),"text/html","utf-8",null);
 
 
@@ -175,9 +160,9 @@ public class WenChuangDetailFragment extends Fragment implements ViewPager.OnPag
 
         }
 
-        MyAdapter adapter = new MyAdapter();
+        VpAdapter adapter = new VpAdapter(getActivity(),imgs);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(currentIndex);
+        viewPager.setCurrentItem(0);
         viewPager.addOnPageChangeListener(this);
 
     }
@@ -216,10 +201,8 @@ public class WenChuangDetailFragment extends Fragment implements ViewPager.OnPag
     @Override
     public void onPageSelected(int position) {
         Log.e("位置：", position + "");
-        currentIndex = position;
         int index = position % imageViewList.size();
         setCurrentSelector(index);
-        lastTime = System.currentTimeMillis();
     }
 
     @Override
