@@ -158,7 +158,6 @@ public class ClassicStorageDetailFragment extends Fragment {
             mLvVideo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                     EventBus.getDefault().post(new MsgEvent(adapter.getmFileList().get(position).getFilePath(),5));
                 }
             });
