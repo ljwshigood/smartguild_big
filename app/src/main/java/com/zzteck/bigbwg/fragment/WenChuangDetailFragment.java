@@ -129,7 +129,10 @@ public class WenChuangDetailFragment extends Fragment implements ViewPager.OnPag
     }
 
     public void updateContent(NearWenChuangBean.DataBean bean){
-      //  initData(bean);
+
+        if(imgs != null){
+            imgs.clear();
+        }
         mTvTitle.setText(bean.getName());
         mTvPrice.setText("售价 ："+numberFormatMoney(bean.getPrice()/ 100+""));
         mWebViewDetail.loadDataWithBaseURL(null,bean.getDesc(),"text/html","utf-8",null);
