@@ -65,7 +65,6 @@ public class ClassicStorageDetailFragment extends Fragment {
         mLLAudio = view.findViewById(R.id.ll_audio) ;
         mLLVideo = view.findViewById(R.id.ll_video) ;
         mWebView = view.findViewById(R.id.webview) ;
-      //  mIvCover = view.findViewById(R.id.ic_cover) ;
         mLLAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,6 +94,10 @@ public class ClassicStorageDetailFragment extends Fragment {
     private List<String> imgs = new ArrayList<>() ;
 
     public void updateContent(String path,String audioString,String videoString,String content){
+
+        if(imgs != null && imgs.size() > 0){
+            imgs.clear();
+        }
 
         if(TextUtils.isEmpty(audioString)){
             mLLAudio.setVisibility(View.GONE) ;

@@ -149,7 +149,7 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
             @Override
             public void accept(Permission permission) throws Exception {
                 if (permission.granted) {
-                    Toast.makeText(getActivity(),"##############permission.granted",1).show();
+                   // Toast.makeText(getActivity(),"##############permission.granted",1).show();
                     JSLocateManager.getInstance().setOnIndoorLocateListener(indoorLocateListener);
                     // SKYLocateManager.getInstance().setOfflineMode();//数据内置APP，使用离线模式
                     // JSLocateManager.getInstance().setRootFolderName("Joysuch");//设置数据存储位置
@@ -157,7 +157,7 @@ public class FMMapBasic extends Fragment implements OnFMMapInitListener ,Compoun
                     JSLocateManager.getInstance().init(getActivity());
 
                 }else{
-                    Toast.makeText(getActivity(),"##############permission.fail",1).show();
+                   // Toast.makeText(getActivity(),"##############permission.fail",1).show();
                 }
             }
         });
